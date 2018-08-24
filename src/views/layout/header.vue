@@ -1,8 +1,9 @@
 <template>
   <a-layout-header style="background: #fff; padding: 0">
     <a-icon class="trigger" :type="isCollapse ? 'menu-unfold' : 'menu-fold'" @click="handleClick" />
+    <!-- 个人中心s -->
     <span class="pull-right header-action" style="margin-right:20px">
-      <a-dropdown style="height:64px;display:inline-block;padding: 0 20px">
+      <a-dropdown style="height:64px;display:inline-block;">
         <a class="ant-dropdown-link">
           artiely
           <a-icon type="down" />
@@ -26,6 +27,8 @@
         </a-menu>
       </a-dropdown>
     </span>
+     <!-- 个人中心e -->
+     <!-- 通知s -->
     <a-popover trigger="click">
       <template slot="content">
         <a-tabs defaultActiveKey="2">
@@ -49,9 +52,21 @@
         </a-badge>
       </span>
     </a-popover>
+     <!-- 通知e -->
+     <!-- 帮助s -->
     <a-tooltip placement="bottom" title="帮助文档" class="hidden-xs-only">
       <a-icon type="question-circle-o" class="pull-right header-action " />
     </a-tooltip>
+     <!-- 帮助e -->
+     <!-- 手机s -->
+     <a-popover class="hidden-xs-only">
+      <template slot="content">
+        <p>手机扫码二维码体验</p>
+        <p><a-icon type="qrcode" />假装有个二维码</p>
+      </template>
+      <a-icon type="mobile" class="pull-right header-action "/>
+    </a-popover>
+     <!-- 手机e -->
   </a-layout-header>
 </template>
 

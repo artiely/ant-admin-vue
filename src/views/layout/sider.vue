@@ -2,7 +2,7 @@
   <a-layout-sider collapsible :trigger="null" :collapsedWidth="collapsedWidth" v-model="isCollapse" width="256px">
     <div class="logo">
       <img :src="require('../../assets/logo.svg')" alt="logo">
-      <h1 v-if="!isCollapse">Ant Design Pro</h1>
+      <h1 v-if="!collapsed">Ant Design Pro</h1>
     </div>
     <a-menu theme="dark" mode="inline" @click="handleMenu" v-model="key">
       <template v-for="(item,index) in menu">
@@ -51,6 +51,19 @@ export default {
         return this.$store.state.sys.isCollapse
       },
       set: function() {}
+    }
+  },
+  watch: {
+    isCollapse: {
+      handler(val) {
+        if (val) {
+          this.collapsed = val
+        } else {
+          setTimeout(() => {
+            this.collapsed = val
+          }, 200)
+        }
+      }
     }
   },
   methods: {
@@ -116,8 +129,8 @@ export default {
   position: relative;
   z-index: 10;
   background: #001529;
-  &.drawer-layout-sider{
-    height:100%
+  &.drawer-layout-sider {
+    height: 100%;
   }
 }
 #components-layout-demo-custom-trigger .trigger {
