@@ -6,3 +6,4 @@ export const SET_LANG = 'SET_LANG' // 语言
 export const LAYOUT = 'LAYOUT' // 布局
 export const USER_INFO = 'USER_INFO' // 布局
 export const IS_MOBILE = 'IS_MOBILE' // 布局
+export const SETTING_VISIBLE = 'SETTING_VISIBLE' // 布局

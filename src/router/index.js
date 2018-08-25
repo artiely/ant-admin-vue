@@ -36,86 +36,7 @@ function lazyLoading(path) {
     })
   }
 }
-export const asyncRouterMap = [
-  {
-    path: '/index',
-    name: 'index',
-    component: lazyLoading('views/index'),
-    meta: {
-      auth: true,
-      title: '商户管理'
-    }
-  },
-  {
-    path: '/box_list',
-    name: 'box_list',
-    component: lazyLoading('views/box_list'),
-    meta: {
-      auth: true,
-      title: '机柜管理'
-    }
-  },
-  {
-    path: '/charge_list',
-    name: 'charge_list',
-    component: lazyLoading('views/charge_list'),
-    meta: {
-      auth: true,
-      title: '充电宝管理'
-    }
-  },
-  {
-    path: '/boxtype_list',
-    name: 'boxtype_list',
-    component: lazyLoading('views/boxtype_list'),
-    meta: {
-      auth: true,
-      title: '机柜类型'
-    }
-  },
-  {
-    path: '/order_list',
-    name: 'order_list',
-    component: lazyLoading('views/order_list'),
-    meta: {
-      auth: true,
-      title: '机柜类型'
-    }
-  },
-  {
-    path: '/member_list',
-    name: 'member_list',
-    component: lazyLoading('views/member_list'),
-    meta: {
-      auth: true
-    }
-  },
-  {
-    path: '/depositlog_list',
-    name: 'depositlog_list',
-    component: lazyLoading('views/depositlog_list'),
-    meta: {
-      auth: true
-    }
-  },
-  {
-    path: '/setting_list',
-    name: 'setting_list',
-    component: lazyLoading('views/setting_list'),
-    meta: {
-      auth: true
-    }
-  },
-  {
-    path: '/*',
-    name: '404',
-    component: E404,
-    meta: {
-      title: '页面找不到',
-      hidden: true
-    }
-  }
-]
+// export const asyncRouterMap =
 
 let constantRouterMap = [
   {
@@ -127,8 +48,35 @@ let constantRouterMap = [
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: '/index',
-    children: [...asyncRouterMap]
+    redirect: 'index',
+    children: [
+      {
+        path: '/index',
+        name: 'index',
+        component: lazyLoading('views/index/index'),
+        meta: {
+          auth: true,
+          title: '商户管理'
+        }
+      }
+    ]
+  },
+  {
+    path: '/*',
+    name: 'Home',
+    component: Home,
+    redirect: '/404',
+    children: [
+      {
+        path: '/404',
+        name: '404',
+        component: E404,
+        meta: {
+          title: '页面找不到',
+          hidden: true
+        }
+      }
+    ]
   }
 ]
 
@@ -186,7 +134,7 @@ const router = new Router({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes: [...constantRouterMap, ...asyncRouterMap]
+  routes: [...constantRouterMap]
 })
 
 // 处理登录

@@ -39,23 +39,23 @@ export default {
   },
   watch: {
     drawerWidth: function(val) {
-      // if(!this.$refs.handler)return
-      // if (this.placement === 'left') {
-      //   this.$refs.handler.style.left = val + 'px'
-      // } else {
-      //   this.$refs.handler.style.right = val + 'px'
-      // }
+      if (!this.$refs.handler) return
+      if (this.placement === 'left') {
+        this.$refs.handler.style.left = val + 'px'
+      } else {
+        this.$refs.handler.style.right = val + 'px'
+      }
     }
   },
   methods: {
     open() {
-      // this.$emit('change', true)
+      this.$emit('change', true)
     },
     close() {
       this.$emit('change', false)
     },
     handle() {
-      // this.$emit('change', !this.isCollapse)
+      this.$emit('change', !this.isCollapse)
     },
     getDrawerWidth() {
       return this.$refs.drawer.clientWidth || 0
@@ -84,7 +84,7 @@ export default {
   height: 100%;
   transition: all 0.2s;
   z-index: 100;
-  flex-direction:row;
+  flex-direction: row;
   &.left {
     left: 0px;
     &.open {

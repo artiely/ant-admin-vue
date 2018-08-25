@@ -1,11 +1,16 @@
 <template>
   <a-layout-header style="background: #fff; padding: 0">
+    <!-- trigger s -->
     <a-icon class="trigger" :type="isCollapse ? 'menu-unfold' : 'menu-fold'" @click="handleClick" />
+     <!-- trigger e -->
+    <!-- 设置s -->
+    <a-icon type="setting" class="pull-right header-action hidden-xs-only"  @click="handleSetting"/>
+    <!-- 设置e -->
     <!-- 个人中心s -->
-    <span class="pull-right header-action" style="margin-right:20px">
+    <span class="pull-right header-action" >
       <a-dropdown style="height:64px;display:inline-block;">
         <a class="ant-dropdown-link">
-          artiely
+         <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="position:relative;top:10px"/> artiely
           <a-icon type="down" />
         </a>
         <a-menu slot="overlay">
@@ -78,11 +83,17 @@ export default {
     },
     isCollapse() {
       return this.$store.state.sys.isCollapse
+    },
+    settingVisible() {
+      return this.$store.state.sys.settingVisible
     }
   },
   methods: {
     handleClick() {
       this.$store.commit('IS_COLLAPSE', !this.isCollapse)
+    },
+    handleSetting() {
+      this.$store.commit('SETTING_VISIBLE', !this.settingVisible)
     }
   }
 }

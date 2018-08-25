@@ -1,13 +1,14 @@
 import * as types from '../mutation-types'
-import {
-  asyncRouterMap
-} from '@/router/index'
+// import {
+//   asyncRouterMap
+// } from '@/router/index'
 import Cookies from 'js-cookie'
 
 // initial state
 const state = {
   layout: '固定布局',
   isCollapse: false, // 菜单状态是否收起
+  settingVisible: false, // 设置
   menu: null, // 菜单
   role: null, // 角色权限
   lang: 'zh', // 语言
@@ -20,30 +21,30 @@ const state = {
  * @param role
  * @param route
  */
-function hasPermission(role, route) {
-  if (route.meta && route.meta.role) {
-    return route.meta.role.indexOf(role) !== -1
-  } else {
-    return true
-  }
-}
+// function hasPermission(role, route) {
+//   if (route.meta && route.meta.role) {
+//     return route.meta.role.indexOf(role) !== -1
+//   } else {
+//     return true
+//   }
+// }
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
  * @param asyncRouterMap
  * @param role
  */
-function filterAsyncRouter(asyncRouterMap, role) {
-  const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(role, route)) {
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, role)
-      }
-      return true
-    }
-    return false
-  })
-  return accessedRouters
-}
+// function filterAsyncRouter(asyncRouterMap, role) {
+//   const accessedRouters = asyncRouterMap.filter(route => {
+//     if (hasPermission(role, route)) {
+//       if (route.children && route.children.length) {
+//         route.children = filterAsyncRouter(route.children, role)
+//       }
+//       return true
+//     }
+//     return false
+//   })
+//   return accessedRouters
+// }
 
 // getters
 const getters = {}
@@ -54,18 +55,20 @@ const mutations = {
   当前菜单收展状态
   */
   [types.IS_COLLAPSE](state, payload) {
-    if (payload) {
-      state.isCollapse = payload
-    } else {
-      state.isCollapse = !state.isCollapse
-    }
+    state.isCollapse = payload || !state.isCollapse
+  },
+  /*
+  设置收展状态
+  */
+  [types.SETTING_VISIBLE](state, payload) {
+    state.settingVisible = payload || !state.settingVisible
   },
   /*
   当前是否小屏
   */
   [types.IS_MOBILE](state, payload) {
     state.isMobile = payload
-    console.log('是否小屏', state.isMobile)
+    // console.log('是否小屏', state.isMobile)
   },
   /*
   布局
@@ -88,7 +91,7 @@ const mutations = {
   */
   [types.FILTER_ROLE](state, payload) {
     state.role = payload
-    state.menu = filterAsyncRouter(asyncRouterMap, payload)
+    // state.menu = filterAsyncRouter(asyncRouterMap, payload)
   },
   // 设置语言
   [types.SET_LANG](state, payload) {

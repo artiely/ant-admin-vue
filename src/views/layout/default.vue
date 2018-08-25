@@ -1,23 +1,24 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
-    <sider-menu></sider-menu>
+    <drawer-sider-menu></drawer-sider-menu>
     <a-layout>
       <a-header/>
       <a-layout-content :style="{padding: '24px', minHeight: '100vh' }">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
+    <drawer-setting></drawer-setting>
   </a-layout>
 </template>
 <script>
-import sider from './sider'
 import header from './header'
-import siderMenu from './siderMenu'
+import drawerSiderMenu from './drawerSiderMenu'
+import drawerSetting from './drawerSetting'
 export default {
   components: {
-    sider,
     'a-header': header,
-    siderMenu
+    drawerSiderMenu,
+    drawerSetting
   }
 }
 </script>
