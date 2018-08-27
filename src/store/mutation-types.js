@@ -7,3 +7,5 @@ export const LAYOUT = 'LAYOUT' // 布局
 export const USER_INFO = 'USER_INFO' // 布局
 export const IS_MOBILE = 'IS_MOBILE' // 布局
 export const SETTING_VISIBLE = 'SETTING_VISIBLE' // 布局
+export const MENU_THEME = 'MENU_THEME' // 布局
+export const MENU_MODE = 'MENU_MODE' // 布局

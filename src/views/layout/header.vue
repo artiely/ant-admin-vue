@@ -10,25 +10,33 @@
     <span class="pull-right header-action" >
       <a-dropdown style="height:64px;display:inline-block;">
         <a class="ant-dropdown-link">
-         <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="position:relative;top:10px"/> artiely
+         <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="position:relative;top:10px"/>
           <a-icon type="down" />
         </a>
         <a-menu slot="overlay">
-          <a-menu-item key="0" disabled>
-            <a-icon type="user" style="margin-right:4px" />个人中心
+          <a-menu-item key="-1" >
+            <a-icon type="user" style="margin-right:4px" />Artiely
           </a-menu-item>
+          <a-menu-divider />
+          <a-menu-item key="-2" >
+            <a-icon type="check-circle-o" style="margin-right:4px" />待办
+          </a-menu-item>
+          <a-menu-item key="-3" >
+            <a-icon type="calendar" style="margin-right:4px" />日程
+          </a-menu-item>
+          <a-menu-divider />
           <a-menu-item key="1" disabled>
             <a-icon type="setting" style="margin-right:4px" />设置
           </a-menu-item>
           <a-menu-item key="2" disabled>
-            <a-icon type="setting" style="margin-right:4px" />触发报错
+            <a-icon type="close-circle-o" style="margin-right:4px" />触发报错
           </a-menu-item>
           <a-menu-item key="3" disabled>
-            <a-icon type="setting" style="margin-right:4px" />锁屏
+            <a-icon type="lock" style="margin-right:4px" />锁屏
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="4" @click.native="logout">
-            <a-icon type="poweroff" style="margin-right:4px" />退出登录</a-menu-item>
+            <a-icon type="poweroff" style="margin-right:4px" />安全登录</a-menu-item>
         </a-menu>
       </a-dropdown>
     </span>

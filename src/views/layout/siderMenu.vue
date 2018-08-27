@@ -1,22 +1,23 @@
 <template>
-  <a-layout-sider collapsible :trigger="null" :collapsedWidth="collapsedWidth" v-model="isCollapse" width="256px">
+  <a-layout-sider collapsible :trigger="null" :collapsedWidth="collapsedWidth" v-model="isCollapse" width="256px"  :class="{'drawer-layout-sider':isMobile, 'drawer-layout-light':menuTheme==='light'}">
     <div class="logo">
       <img :src="require('../../assets/logo.svg')" alt="logo">
       <h1 v-if="!collapsed">Ant Design Pro</h1>
     </div>
-    <a-menu theme="dark" mode="inline" @click="handleMenu" v-model="key">
+    <a-menu  @click="handleMenu" v-model="key" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme">
       <template v-for="(item,index) in menu">
         <a-sub-menu :key="index" v-if="item.children">
           <span slot="title">
-            <a-icon :type="item.icon" />
-            <span>{{item.title}}</span>
+            <a-icon :type="item.meta.icon" v-if="item.meta.icon" />
+            <span>{{item.meta.title}}</span>
           </span>
           <a-menu-item :key="sub.path" v-for="sub in item.children">
-            <a-icon :type="sub.icon" />{{sub.title}}</a-menu-item>
+            <a-icon :type="sub.meta.icon" v-if="sub.meta.icon" /> {{sub.meta.title}}
+          </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="item.path">
           <a-icon :type="item.icon" />
-          <span>{{item.title}}</span>
+          <span>{{item.meta.title}}</span>
         </a-menu-item>
       </template>
     </a-menu>
@@ -37,15 +38,25 @@ export default {
   data() {
     return {
       collapsed: false,
-      key: []
+      key: [],
+      defaultPath: []
     }
   },
   computed: {
     menu() {
       return this.$store.state.sys.menu
     },
+    menuMode() {
+      return this.$store.state.sys.menuMode
+    },
+    menuTheme() {
+      return this.$store.state.sys.menuTheme
+    },
     userInfo() {
       return this.$store.state.sys.userInfo
+    },
+    isMobile() {
+      return this.$store.state.sys.isMobile
     },
     isCollapse: {
       get: function() {
@@ -54,23 +65,10 @@ export default {
       set: function() {}
     }
   },
-  watch: {
-    isCollapse: {
-      handler(val) {
-        if (val) {
-          this.collapsed = val
-        } else {
-          setTimeout(() => {
-            this.collapsed = val
-          }, 200)
-        }
-      },
-      immediate: true
-    }
-  },
   methods: {
     handleMenu(item, key) {
       this.$router.push(item.key)
+      console.log('当前的路径', item.key)
     },
     logout() {
       Cookies.remove('access_token')
@@ -125,6 +123,10 @@ export default {
       }
     }
     mediaQuery.init()
+    // defaultPath
+    console.log('defaultPath', this.$route.path)
+    this.defaultPath = [this.$route.path]
+    this.key = [this.$route.path]
   }
 }
 </script>
@@ -135,9 +137,23 @@ export default {
   position: relative;
   z-index: 10;
   background: #001529;
+  transition: all 0.3s;
   &.drawer-layout-sider {
     height: 100%;
   }
+  &.drawer-layout-light{
+    background: #fff;
+   transition: all 0.3s;
+    .logo{
+      background: #fff;
+      h1{
+        color:#001529
+      }
+    }
+  }
+}
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{
+  border-right:none!important;
 }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
@@ -145,7 +161,6 @@ export default {
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
-  // height: 100%;
 }
 
 #components-layout-demo-custom-trigger {
@@ -164,24 +179,29 @@ export default {
   }
 }
 .logo {
-  padding: 16px;
   height: 64px;
+  position: relative;
+  line-height: 64px;
+  padding-left: 24px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
   background: #002140;
-  text-align: center;
   overflow: hidden;
-  img {
-    display: inline-block;
-    vertical-align: middle;
-    height: 32px;
-  }
   h1 {
-    display: inline-block;
-    vertical-align: middle;
     color: #fff;
     font-size: 20px;
     margin: 0 0 0 12px;
     font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     font-weight: 600;
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: middle;
+  }
+  img {
+    width: 32px;
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 </style>

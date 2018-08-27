@@ -2,7 +2,7 @@
   <div>
     <div :class="['mask', !isCollapse ? 'open' : 'close']" @click="close"></div>
     <div :class="['drawer', placement, !isCollapse ? 'open' : 'close']">
-      <div ref="drawer" style="position: relative; height: 100%;">
+      <div ref="drawer" style="position: relative; height: 100%;background:#fff">
         <slot></slot>
       </div>
       <div v-if="showHandler" :class="['handler-container', placement]" ref="handler" @click="handle">
@@ -72,6 +72,8 @@ export default {
   background-color: rgba(0, 0, 0, 0.2);
   transition: all 0.2s;
   z-index: 100;
+  top:0;
+  left:0;
   &.open {
     display: inline-block;
   }

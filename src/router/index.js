@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Login from '@/views/auth/Login'
 import E404 from '@/views/auth/E404'
 import Home from '@/views/layout/default'
+import RouterView from '@/views/layout/routerView'
 import store from '@/store'
 import NProgress from 'nprogress'
 // import {notification} from 'ant-design-vue'
@@ -36,7 +37,80 @@ function lazyLoading(path) {
     })
   }
 }
-// export const asyncRouterMap =
+export const asyncRouterMap = [
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: RouterView,
+    meta: {
+      auth: true,
+      title: 'dashboard',
+      icon: 'ant-design',
+      visible: true
+    },
+    children: [
+      {
+        path: '/dashboard/workplace',
+        name: '',
+        component: lazyLoading('views/dashboard/workplace'),
+        meta: {
+          auth: true,
+          title: '工作台',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/dashboard/analysis',
+        name: '',
+        component: lazyLoading('views/dashboard/analysis'),
+        meta: {
+          auth: true,
+          title: '分析页',
+          icon: 'line-chart'
+        }
+      }
+    ]
+  },
+  {
+    path: '/form',
+    name: 'form',
+    component: RouterView,
+    meta: {
+      auth: true,
+      title: '表单页',
+      icon: 'form'
+    },
+    children: [
+      {
+        path: '/form/basic',
+        name: 'basic',
+        component: lazyLoading('views/dashboard/analysis'),
+        meta: {
+          auth: true,
+          title: '表单页'
+        }
+      },
+      {
+        path: '/form/step',
+        name: 'step',
+        component: lazyLoading('views/dashboard/analysis'),
+        meta: {
+          auth: true,
+          title: '分步表单'
+        }
+      },
+      {
+        path: '/form/advanced',
+        name: 'advanced',
+        component: lazyLoading('views/dashboard/analysis'),
+        meta: {
+          auth: true,
+          title: '高级表单'
+        }
+      }
+    ]
+  }
+]
 
 let constantRouterMap = [
   {
@@ -49,17 +123,7 @@ let constantRouterMap = [
     name: 'Home',
     component: Home,
     redirect: 'index',
-    children: [
-      {
-        path: '/index',
-        name: 'index',
-        component: lazyLoading('views/index/index'),
-        meta: {
-          auth: true,
-          title: '商户管理'
-        }
-      }
-    ]
+    children: asyncRouterMap
   },
   {
     path: '/*',
@@ -80,56 +144,7 @@ let constantRouterMap = [
   }
 ]
 
-const MENU = [
-  {
-    title: '商户管理',
-    icon: 'shop',
-    path: '/store_list'
-  },
-  {
-    title: '设备管理',
-    icon: 'appstore-o',
-    children: [
-      {
-        title: '机柜管理',
-        path: '/box_list',
-        icon: 'database'
-      },
-      {
-        title: '充电宝管理',
-        path: '/charge_list',
-        icon: 'hdd'
-      }
-    ]
-  },
-  {
-    title: '机柜类型',
-    path: '/boxtype_list',
-    icon: 'layout'
-  },
-  {
-    title: '订单列表',
-    path: '/order_list',
-    icon: 'profile'
-  },
-  {
-    title: '押金列表',
-    path: '/depositlog_list',
-    icon: 'red-envelope'
-  },
-  {
-    title: '用户列表',
-    path: '/member_list',
-    icon: 'team'
-  },
-  {
-    title: '系统设置',
-    path: '/setting_list',
-    icon: 'setting'
-  }
-]
-
-store.commit('SET_MENU', MENU)
+store.commit('SET_MENU', asyncRouterMap)
 const router = new Router({
   scrollBehavior: () => ({
     y: 0

@@ -13,6 +13,8 @@ const state = {
   role: null, // 角色权限
   lang: 'zh', // 语言
   userInfo: null,
+  menuMode: 'inline', // 菜单模式
+  menuTheme: 'light', // 菜单主题
   isMobile: false // 是否小屏
 }
 
@@ -56,6 +58,18 @@ const mutations = {
   */
   [types.IS_COLLAPSE](state, payload) {
     state.isCollapse = payload || !state.isCollapse
+  },
+  /*
+  菜单模式
+  */
+  [types.MENU_MODE](state, payload) {
+    state.menuMode = state.menuMode === 'vertical' ? 'inline' : 'vertical'
+  },
+  /*
+   菜单主题
+   */
+  [types.MENU_THEME](state, payload) {
+    state.menuTheme = state.menuTheme === 'dark' ? 'light' : 'dark'
   },
   /*
   设置收展状态
