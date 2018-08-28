@@ -1,21 +1,21 @@
 <template>
-  <a-layout-sider collapsible :trigger="null" :collapsedWidth="collapsedWidth" v-model="isCollapse" width="256px"  :class="{'drawer-layout-sider':isMobile, 'drawer-layout-light':menuTheme==='light'}">
+  <a-layout-sider collapsible :trigger="null" :collapsedWidth="collapsedWidth" v-model="isCollapse" width="256px" :class="{'drawer-layout-sider':isMobile, 'drawer-layout-light':menuTheme==='light'}">
     <div class="logo">
       <img :src="require('../../assets/logo.svg')" alt="logo">
       <h1 v-if="!collapsed">Ant Design Pro</h1>
     </div>
-    <a-menu  @click="handleMenu" v-model="key" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme">
+    <a-menu @click="handleMenu" v-model="key" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme">
       <template v-for="(item,index) in menu">
-        <a-sub-menu :key="index" v-if="item.children">
+        <a-sub-menu :key="index" v-if="item.children" :obj="item">
           <span slot="title">
             <a-icon :type="item.meta.icon" v-if="item.meta.icon" />
             <span>{{item.meta.title}}</span>
           </span>
-          <a-menu-item :key="sub.path" v-for="sub in item.children">
+          <a-menu-item :key="sub.path" v-for="sub in item.children" :obj="sub">
             <a-icon :type="sub.meta.icon" v-if="sub.meta.icon" /> {{sub.meta.title}}
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item v-else :key="item.path">
+        <a-menu-item v-else :key="item.path" :obj="item">
           <a-icon :type="item.icon" />
           <span>{{item.meta.title}}</span>
         </a-menu-item>
@@ -26,7 +26,6 @@
 
 <script>
 import Cookies from 'js-cookie'
-
 export default {
   name: 'sider-menu',
   props: {
@@ -68,7 +67,7 @@ export default {
   methods: {
     handleMenu(item, key) {
       this.$router.push(item.key)
-      console.log('当前的路径', item.key)
+      this.$store.commit('NAV_TABS', item.item.$attrs.obj)
     },
     logout() {
       Cookies.remove('access_token')
@@ -141,19 +140,21 @@ export default {
   &.drawer-layout-sider {
     height: 100%;
   }
-  &.drawer-layout-light{
+  &.drawer-layout-light {
     background: #fff;
-   transition: all 0.3s;
-    .logo{
+    transition: all 0.3s;
+    .logo {
       background: #fff;
-      h1{
-        color:#001529
+      h1 {
+        color: #001529;
       }
     }
   }
 }
-.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{
-  border-right:none!important;
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
+  border-right: none !important;
 }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
@@ -161,22 +162,6 @@ export default {
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
-}
-
-#components-layout-demo-custom-trigger {
-  .header-action {
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 15px;
-    cursor: pointer;
-    transition: color 0.3s;
-    height: 100%;
-    &:hover,
-    &:focus {
-      color: #1890ff;
-      background: #e6f7ff;
-    }
-  }
 }
 .logo {
   height: 64px;

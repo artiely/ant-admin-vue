@@ -3,10 +3,7 @@
     <drawer-sider-menu></drawer-sider-menu>
     <a-layout>
       <a-header/>
-      <a-layout-content :style="{padding: '24px', minHeight: '100vh' }">
-        <router-view>
-        </router-view>
-      </a-layout-content>
+      <a-content/>
       <a-layout-footer style="text-align: center">
         Ant Design ©2016 Created by Ant UED
       </a-layout-footer>
@@ -16,11 +13,13 @@
 </template>
 <script>
 import header from './header'
+import content from './content'
 import drawerSiderMenu from './drawerSiderMenu'
 import drawerSetting from './drawerSetting'
 export default {
   components: {
     'a-header': header,
+    'a-content': content,
     drawerSiderMenu,
     drawerSetting
   }

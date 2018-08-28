@@ -9,3 +9,7 @@ export const IS_MOBILE = 'IS_MOBILE' // 布局
 export const SETTING_VISIBLE = 'SETTING_VISIBLE' // 布局
 export const MENU_THEME = 'MENU_THEME' // 布局
 export const MENU_MODE = 'MENU_MODE' // 布局
+export const HEADER_THEME = 'HEADER_THEME' // 布局
+export const NAV_TABS = 'NAV_TABS' // 布局
+export const ACTIVE_TAB = 'ACTIVE_TAB' // 布局
+export const REMOVE_TAB = 'REMOVE_TAB' // 布局

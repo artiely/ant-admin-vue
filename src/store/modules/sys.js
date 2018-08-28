@@ -8,13 +8,16 @@ import Cookies from 'js-cookie'
 const state = {
   layout: '固定布局',
   isCollapse: false, // 菜单状态是否收起
-  settingVisible: false, // 设置
+  settingVisible: true, // 设置
   menu: null, // 菜单
   role: null, // 角色权限
   lang: 'zh', // 语言
   userInfo: null,
+  navTabs: [], // 标签栏
+  activeTab: '',
   menuMode: 'inline', // 菜单模式
   menuTheme: 'light', // 菜单主题
+  headerTheme: 'light', // header主题
   isMobile: false // 是否小屏
 }
 
@@ -64,6 +67,42 @@ const mutations = {
   */
   [types.MENU_MODE](state, payload) {
     state.menuMode = state.menuMode === 'vertical' ? 'inline' : 'vertical'
+  },
+  /*
+  菜单模式
+  */
+  [types.NAV_TABS](state, payload) {
+    state.activeTab = payload.path
+    const findIndex = (element) => {
+      return element.path === payload.path
+    }
+    let index = state.navTabs.findIndex(findIndex)
+    if (index === -1) {
+      state.navTabs.push(payload)
+    }
+  },
+  [types.ACTIVE_TAB](state, payload) {
+    state.activeTab = payload
+  },
+  [types.REMOVE_TAB](state, payload) {
+    const findIndex = (element) => {
+      return element.path === payload.path
+    }
+    let index = state.navTabs.findIndex(findIndex)
+    if (index !== -1) {
+      state.navTabs.splice(index, 1)
+      if (state.navTabs.length === 0) {
+        state.activeTab = '/dashboard/analysis'
+      } else {
+        state.activeTab = state.navTabs[state.navTabs.length - 1].path
+      }
+    }
+  },
+  /*
+  header主题
+  */
+  [types.HEADER_THEME](state, payload) {
+    state.headerTheme = state.headerTheme === 'dark' ? 'light' : 'dark'
   },
   /*
    菜单主题

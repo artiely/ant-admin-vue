@@ -1,27 +1,27 @@
 <template>
-  <a-layout-header style="background: #fff; padding: 0">
+  <a-layout-header class="layout-header" :class="{'layout-header-dark': headerTheme==='dark'}">
     <!-- trigger s -->
     <a-icon class="trigger" :type="isCollapse ? 'menu-unfold' : 'menu-fold'" @click="handleClick" />
-     <!-- trigger e -->
+    <!-- trigger e -->
     <!-- 设置s -->
-    <a-icon type="setting" class="pull-right header-action hidden-xs-only"  @click="handleSetting"/>
+    <a-icon type="setting" class="pull-right header-action hidden-xs-only" @click="handleSetting" />
     <!-- 设置e -->
     <!-- 个人中心s -->
-    <span class="pull-right header-action" >
+    <span class="pull-right header-action">
       <a-dropdown style="height:64px;display:inline-block;">
         <a class="ant-dropdown-link">
-         <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="position:relative;top:10px"/>
+          <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="position:relative;top:10px" />
           <a-icon type="down" />
         </a>
         <a-menu slot="overlay">
-          <a-menu-item key="-1" >
+          <a-menu-item key="-1">
             <a-icon type="user" style="margin-right:4px" />Artiely
           </a-menu-item>
           <a-menu-divider />
-          <a-menu-item key="-2" >
+          <a-menu-item key="-2">
             <a-icon type="check-circle-o" style="margin-right:4px" />待办
           </a-menu-item>
-          <a-menu-item key="-3" >
+          <a-menu-item key="-3">
             <a-icon type="calendar" style="margin-right:4px" />日程
           </a-menu-item>
           <a-menu-divider />
@@ -40,8 +40,8 @@
         </a-menu>
       </a-dropdown>
     </span>
-     <!-- 个人中心e -->
-     <!-- 通知s -->
+    <!-- 个人中心e -->
+    <!-- 通知s -->
     <a-popover trigger="click">
       <template slot="content">
         <a-tabs defaultActiveKey="2">
@@ -65,21 +65,22 @@
         </a-badge>
       </span>
     </a-popover>
-     <!-- 通知e -->
-     <!-- 帮助s -->
+    <!-- 通知e -->
+    <!-- 帮助s -->
     <a-tooltip placement="bottom" title="帮助文档" class="hidden-xs-only">
       <a-icon type="question-circle-o" class="pull-right header-action " />
     </a-tooltip>
-     <!-- 帮助e -->
-     <!-- 手机s -->
-     <a-popover class="hidden-xs-only">
+    <!-- 帮助e -->
+    <!-- 手机s -->
+    <a-popover class="hidden-xs-only">
       <template slot="content">
         <p>手机扫码二维码体验</p>
-        <p><a-icon type="qrcode" />假装有个二维码</p>
+        <p>
+          <a-icon type="qrcode" />假装有个二维码</p>
       </template>
-      <a-icon type="mobile" class="pull-right header-action "/>
+      <a-icon type="mobile" class="pull-right header-action " />
     </a-popover>
-     <!-- 手机e -->
+    <!-- 手机e -->
   </a-layout-header>
 </template>
 
@@ -94,6 +95,9 @@ export default {
     },
     settingVisible() {
       return this.$store.state.sys.settingVisible
+    },
+    headerTheme() {
+      return this.$store.state.sys.headerTheme
     }
   },
   methods: {
@@ -106,3 +110,46 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.layout-header {
+  &.ant-layout-header {
+    background: #fff;
+    padding: 0;
+  }
+  &.layout-header-dark {
+    &.ant-layout-header {
+      background: #002140;
+    }
+    color:#fff!important;
+    .ant-badge{
+     color:#fff!important;
+    }
+    .header-action {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+    height: 100%;
+    &:hover,
+    &:focus {
+      color: #1890ff;
+      background: #000c17;
+    }
+  }
+  }
+  .header-action {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+    height: 100%;
+    &:hover,
+    &:focus {
+      color: #1890ff;
+      background: #e6f7ff;
+    }
+  }
+}
+</style>

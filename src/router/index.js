@@ -44,14 +44,14 @@ export const asyncRouterMap = [
     component: RouterView,
     meta: {
       auth: true,
-      title: 'dashboard',
+      title: '主页',
       icon: 'ant-design',
       visible: true
     },
     children: [
       {
         path: '/dashboard/workplace',
-        name: '',
+        name: 'workplace',
         component: lazyLoading('views/dashboard/workplace'),
         meta: {
           auth: true,
@@ -61,7 +61,7 @@ export const asyncRouterMap = [
       },
       {
         path: '/dashboard/analysis',
-        name: '',
+        name: 'analysis',
         component: lazyLoading('views/dashboard/analysis'),
         meta: {
           auth: true,
