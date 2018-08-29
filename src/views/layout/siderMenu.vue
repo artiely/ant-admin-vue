@@ -4,7 +4,7 @@
       <img :src="require('../../assets/logo.svg')" alt="logo">
       <h1 v-if="!collapsed">Ant Design Pro</h1>
     </div>
-    <a-menu @click="handleMenu" v-model="key" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme">
+    <a-menu @click="handleMenu" v-model="activeTab" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme">
       <template v-for="(item,index) in menu">
         <a-sub-menu :key="index" v-if="item.children" :obj="item">
           <span slot="title">
@@ -37,7 +37,6 @@ export default {
   data() {
     return {
       collapsed: false,
-      key: [],
       defaultPath: []
     }
   },
@@ -56,6 +55,12 @@ export default {
     },
     isMobile() {
       return this.$store.state.sys.isMobile
+    },
+    activeTab: {
+      get: function() {
+        return [this.$store.state.sys.activeTab]
+      },
+      set: function() {}
     },
     isCollapse: {
       get: function() {

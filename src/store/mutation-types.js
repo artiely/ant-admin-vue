@@ -13,3 +13,7 @@ export const HEADER_THEME = 'HEADER_THEME' // 布局
 export const NAV_TABS = 'NAV_TABS' // 布局
 export const ACTIVE_TAB = 'ACTIVE_TAB' // 布局
 export const REMOVE_TAB = 'REMOVE_TAB' // 布局
+export const CLOSE_CURR_TAG = 'CLOSE_CURR_TAG' // 布局
+export const CLOSE_OTHER_TAG = 'CLOSE_OTHER_TAG' // 布局
+export const CLOSE_ALL_TAG = 'CLOSE_ALL_TAG' // 布局
+export const REFRESH_CURR_TAG = 'REFRESH_CURR_TAG' // 布局

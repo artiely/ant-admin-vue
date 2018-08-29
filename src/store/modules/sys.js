@@ -73,7 +73,7 @@ const mutations = {
   */
   [types.NAV_TABS](state, payload) {
     state.activeTab = payload.path
-    const findIndex = (element) => {
+    const findIndex = element => {
       return element.path === payload.path
     }
     let index = state.navTabs.findIndex(findIndex)
@@ -84,8 +84,41 @@ const mutations = {
   [types.ACTIVE_TAB](state, payload) {
     state.activeTab = payload
   },
+  [types.CLOSE_OTHER_TAG](state, payload) {
+    // 关闭其他标签
+    state.navTabs = state.navTabs.filter(v => {
+      return v.path === state.activeTab
+    })
+  },
+  [types.CLOSE_ALL_TAG](state, payload) {
+    // 关闭所有标签
+    state.navTabs = []
+  },
+  [types.REFRESH_CURR_TAG](state, payload) {
+    // const findIndex = element => {
+    //   return element.path === state.activeTab
+    // }
+    // let index = state.navTabs.findIndex(findIndex)
+    // let activeTabObj = state.navTabs[index]
+    // state.navTabs.push(activeTabObj)
+  },
+  [types.CLOSE_CURR_TAG](state, payload) {
+    // 关闭当前标签
+    const findIndex = element => {
+      return element.path === state.activeTab
+    }
+    let index = state.navTabs.findIndex(findIndex)
+    if (index !== -1) {
+      state.navTabs.splice(index, 1)
+      if (state.navTabs.length === 0) {
+        state.activeTab = '/dashboard/analysis'
+      } else {
+        state.activeTab = state.navTabs[state.navTabs.length - 1].path
+      }
+    }
+  },
   [types.REMOVE_TAB](state, payload) {
-    const findIndex = (element) => {
+    const findIndex = element => {
       return element.path === payload.path
     }
     let index = state.navTabs.findIndex(findIndex)
