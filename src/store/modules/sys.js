@@ -6,21 +6,34 @@ import Cookies from 'js-cookie'
 
 // initial state
 const state = {
+  /**
+   * 布局
+   */
   layout: '固定布局',
   isCollapse: false, // 菜单状态是否收起
   settingVisible: true, // 设置
+  isMobile: false, // 是否小屏
+  /**
+   * 权限
+   */
   menu: null, // 菜单
   role: null, // 角色权限
-  lang: 'zh', // 语言
   userInfo: null,
+  /**
+   * tab标签页
+   */
   navTabs: [], // 标签栏
+  isTabMode: true, // 是否是标签页模式
   activeTab: '',
   tempObj: {},
-  // activeTabObj: {},
+  currTabIndex: 0,
+  /**
+   * 主题
+   */
   menuMode: 'inline', // 菜单模式
   menuTheme: 'light', // 菜单主题
   headerTheme: 'light', // header主题
-  isMobile: false // 是否小屏
+  lang: 'zh' // 语言
 }
 
 /**
@@ -55,7 +68,7 @@ const state = {
 
 // getters
 const getters = {
-  activeTabObj: state => {
+  activeTabObj: state => { // 通过当前的路径计算当前的tab对象
     const findIndex = element => {
       return element.path === state.activeTab
     }
@@ -70,21 +83,18 @@ const getters = {
 // mutations
 const mutations = {
   /*
-  当前菜单收展状态
+  菜单相关
   */
-  [types.IS_COLLAPSE](state, payload) {
+  [types.IS_COLLAPSE](state, payload) { // 当前菜单收展状态
     state.isCollapse = payload || !state.isCollapse
   },
-  /*
-  菜单模式
-  */
-  [types.MENU_MODE](state, payload) {
+  [types.MENU_MODE](state, payload) { // 菜单模式
     state.menuMode = state.menuMode === 'vertical' ? 'inline' : 'vertical'
   },
-  /*
-  菜单模式
-  */
-  [types.NAV_TABS](state, payload) {
+  /**
+   * 标签页相关
+   */
+  [types.NAV_TABS](state, payload) { // 标签页数组模式
     state.activeTab = payload.path
     const findIndex = element => {
       return element.path === payload.path
@@ -94,15 +104,19 @@ const mutations = {
       state.navTabs.push(payload)
     }
   },
-  [types.ACTIVE_TAB](state, payload) {
+  [types.ACTIVE_TAB](state, payload) { // 当前的path
     state.activeTab = payload
   },
-  [types.SET_CURR_TAG](state, payload) {
+  [types.TAB_MODE](state, payload) { // 是否开启tab模式
+    state.isTabMode = payload ? Boolean(payload) : !state.isTabMode
+  },
+  [types.SET_CURR_TAG](state, payload) { // 当前的tab对象
     // 保存临时变量
     const findIndex = element => {
       return element.path === state.activeTab
     }
     let index = state.navTabs.findIndex(findIndex)
+    state.currTabIndex = index
     if (index !== -1 && state.navTabs.length !== 0) {
       state.tempObj = state.navTabs[index]
       state.navTabs.splice(index, 1)
@@ -123,8 +137,8 @@ const mutations = {
     // 关闭所有标签
     state.navTabs = []
   },
-  [types.REFRESH_CURR_TAG](state, payload) {
-    state.navTabs.push(state.tempObj)
+  [types.REFRESH_CURR_TAG](state, payload) { // 刷新当前标签
+    state.navTabs.splice(state.currTabIndex, 0, state.tempObj)
     state.activeTab = state.tempObj.path
   },
   [types.CLOSE_CURR_TAG](state, payload) {
@@ -140,10 +154,9 @@ const mutations = {
       } else {
         state.activeTab = state.navTabs[state.navTabs.length - 1].path
       }
-      // state.activeTabObj = state.navTabs[index]
     }
   },
-  [types.REMOVE_TAB](state, payload) {
+  [types.REMOVE_TAB](state, payload) { // 移除某一个便签页不一定是当前页
     const findIndex = element => {
       return element.path === payload.path
     }
@@ -158,15 +171,12 @@ const mutations = {
     }
   },
   /*
-  header主题
+  主题相关
   */
-  [types.HEADER_THEME](state, payload) {
+  [types.HEADER_THEME](state, payload) { // header主题
     state.headerTheme = state.headerTheme === 'dark' ? 'light' : 'dark'
   },
-  /*
-   菜单主题
-   */
-  [types.MENU_THEME](state, payload) {
+  [types.MENU_THEME](state, payload) { // 菜单主题
     state.menuTheme = state.menuTheme === 'dark' ? 'light' : 'dark'
   },
   /*
@@ -180,7 +190,6 @@ const mutations = {
   */
   [types.IS_MOBILE](state, payload) {
     state.isMobile = payload
-    // console.log('是否小屏', state.isMobile)
   },
   /*
   布局

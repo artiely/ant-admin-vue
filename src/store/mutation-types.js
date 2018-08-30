@@ -18,3 +18,4 @@ export const CLOSE_OTHER_TAG = 'CLOSE_OTHER_TAG' // 布局
 export const CLOSE_ALL_TAG = 'CLOSE_ALL_TAG' // 布局
 export const REFRESH_CURR_TAG = 'REFRESH_CURR_TAG' // 布局
 export const SET_CURR_TAG = 'SET_CURR_TAG' // 布局
+export const TAB_MODE = 'TAB_MODE' // 布局

@@ -3,11 +3,14 @@
  */
 import Icon from './Icon'
 import Drawer from './Drawer'
+import Cell from './Cell'
 
 // import './style/index.less'
 export default {
   Icon,
   'v-icon': Icon,
   Drawer,
-  'v-drawer': Drawer
+  'v-drawer': Drawer,
+  Cell,
+  'v-cell': Cell
 }

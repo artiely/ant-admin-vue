@@ -14,19 +14,13 @@
         <a-radio :style="radioStyle" value="dark">黑色</a-radio>
       </a-radio-group>
       <a-divider orientation="left">导航颜色</a-divider>
-       <a-radio-group @change="onChangeHeaderThemee" v-model="headerTheme">
+      <a-radio-group @change="onChangeHeaderThemee" v-model="headerTheme">
         <a-radio :style="radioStyle" value="light">白色</a-radio>
         <a-radio :style="radioStyle" value="dark">黑色</a-radio>
       </a-radio-group>
-      <a-divider orientation="left">菜单模式</a-divider>
-       <a-radio-group @change="onChangeMode" v-model="menuTheme">
-        <a-radio :style="radioStyle" value="light">面包屑模式</a-radio>
-        <a-radio :style="radioStyle" value="dark">标签页模式</a-radio>
-      </a-radio-group>
-      <a-switch defaultChecked @change='onChangeMode' />
-      <a-divider orientation="left">面包屑模式</a-divider>
-      <a-divider orientation="left">标签页模式</a-divider>
-      <a-divider orientation="left">导航颜色</a-divider>
+      <v-cell title="标签页模式" mode="switch" v-model="isTabMode"></v-cell>
+      <v-cell title="内联菜单模式" mode="switch" v-model="menuMode"></v-cell>
+      <v-cell title="面包屑模式" mode="switch" v-model="menuMode"></v-cell>
     </div>
   </v-drawer>
 </template>
@@ -38,7 +32,8 @@ export default {
         height: '30px',
         width: '100px',
         lineHeight: '30px'
-      }
+      },
+      tabMode: true
     }
   },
   computed: {
@@ -48,8 +43,24 @@ export default {
     menuTheme() {
       return this.$store.state.sys.menuTheme
     },
+    menuMode: {
+      get() {
+        return this.$store.state.sys.menuMode === 'inline'
+      },
+      set(val) {
+        this.$store.commit('MENU_MODE', val)
+      }
+    },
     headerTheme() {
       return this.$store.state.sys.headerTheme
+    },
+    isTabMode: {
+      get() {
+        return this.$store.state.sys.isTabMode
+      },
+      set(val) {
+        this.$store.commit('TAB_MODE', val)
+      }
     }
   },
   methods: {
@@ -58,9 +69,6 @@ export default {
     },
     onChangeTheme() {
       this.$store.commit('MENU_THEME')
-    },
-    onChangeMode() {
-      this.$store.commit('MENU_MODE')
     },
     onChangeHeaderThemee() {
       this.$store.commit('HEADER_THEME')

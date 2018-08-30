@@ -1,6 +1,6 @@
 <template>
   <a-layout-content :style="{padding: '0', minHeight: '100vh' }">
-    <a-tabs v-if="navTabs.length>0" class="header-tabs" :activeKey="activeTab" defaultActiveKey="1" tabPosition="top" size="small" :tabBarGutter="10" :animated="false" :tabBarStyle="{'background':'#f8f8f8'}">
+    <a-tabs v-if="navTabs.length>0 && isTabMode" class="header-tabs" :activeKey="activeTab" defaultActiveKey="1" tabPosition="top" size="small" :tabBarGutter="10" :animated="false" :tabBarStyle="{'background':'#f8f8f8'}">
       <a-tab-pane :key="item.path" v-for="item in navTabs">
         <span slot="tab" class="header-tab">
           <span @click="change(item.path)">{{item.meta.title}}</span>
@@ -53,6 +53,9 @@ export default {
     },
     activeTab() {
       return this.$store.state.sys.activeTab
+    },
+    isTabMode() {
+      return this.$store.state.sys.isTabMode
     },
     activeTabObj() {
       return this.$store.getters.activeTabObj
