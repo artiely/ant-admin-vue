@@ -84,7 +84,7 @@ export const asyncRouterMap = [
       {
         path: '/form/basic',
         name: 'basic',
-        component: lazyLoading('views/dashboard/analysis'),
+        component: lazyLoading('views/form/basic'),
         meta: {
           auth: true,
           title: '表单页'
@@ -93,7 +93,7 @@ export const asyncRouterMap = [
       {
         path: '/form/step',
         name: 'step',
-        component: lazyLoading('views/dashboard/analysis'),
+        component: lazyLoading('views/form/step'),
         meta: {
           auth: true,
           title: '分步表单'
@@ -102,7 +102,18 @@ export const asyncRouterMap = [
       {
         path: '/form/advanced',
         name: 'advanced',
-        component: lazyLoading('views/dashboard/analysis'),
+        component: lazyLoading('views/form/advanced'),
+        meta: {
+          auth: true,
+          title: '高级表单'
+        }
+      },
+      {
+        path: '/form/advanced2',
+        name: 'advanced',
+        type: 'iframe',
+        iframeUrl: 'http://www.baidu.com',
+        // component: lazyLoading('views/dashboard/analysis'),
         meta: {
           auth: true,
           title: '高级表单'

@@ -50,6 +50,7 @@ export default {
   computed: {},
   watch: {},
   mounted() {
+    console.log('刷新了')
   }
 }
 </script>

@@ -15,6 +15,8 @@ const state = {
   userInfo: null,
   navTabs: [], // 标签栏
   activeTab: '',
+  tempObj: {},
+  // activeTabObj: {},
   menuMode: 'inline', // 菜单模式
   menuTheme: 'light', // 菜单主题
   headerTheme: 'light', // header主题
@@ -52,7 +54,18 @@ const state = {
 // }
 
 // getters
-const getters = {}
+const getters = {
+  activeTabObj: state => {
+    const findIndex = element => {
+      return element.path === state.activeTab
+    }
+    let index = state.navTabs.findIndex(findIndex)
+    if (index !== -1 && state.navTabs.length !== 0) {
+      return state.navTabs[index]
+    }
+    return {}
+  }
+}
 
 // mutations
 const mutations = {
@@ -84,6 +97,22 @@ const mutations = {
   [types.ACTIVE_TAB](state, payload) {
     state.activeTab = payload
   },
+  [types.SET_CURR_TAG](state, payload) {
+    // 保存临时变量
+    const findIndex = element => {
+      return element.path === state.activeTab
+    }
+    let index = state.navTabs.findIndex(findIndex)
+    if (index !== -1 && state.navTabs.length !== 0) {
+      state.tempObj = state.navTabs[index]
+      state.navTabs.splice(index, 1)
+      if (state.navTabs.length === 0) {
+        state.activeTab = '/dashboard/analysis'
+      } else {
+        state.activeTab = state.navTabs[state.navTabs.length - 1].path
+      }
+    }
+  },
   [types.CLOSE_OTHER_TAG](state, payload) {
     // 关闭其他标签
     state.navTabs = state.navTabs.filter(v => {
@@ -95,12 +124,8 @@ const mutations = {
     state.navTabs = []
   },
   [types.REFRESH_CURR_TAG](state, payload) {
-    // const findIndex = element => {
-    //   return element.path === state.activeTab
-    // }
-    // let index = state.navTabs.findIndex(findIndex)
-    // let activeTabObj = state.navTabs[index]
-    // state.navTabs.push(activeTabObj)
+    state.navTabs.push(state.tempObj)
+    state.activeTab = state.tempObj.path
   },
   [types.CLOSE_CURR_TAG](state, payload) {
     // 关闭当前标签
@@ -115,6 +140,7 @@ const mutations = {
       } else {
         state.activeTab = state.navTabs[state.navTabs.length - 1].path
       }
+      // state.activeTabObj = state.navTabs[index]
     }
   },
   [types.REMOVE_TAB](state, payload) {

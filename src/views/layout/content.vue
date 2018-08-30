@@ -4,8 +4,12 @@
       <a-tab-pane :key="item.path" v-for="item in navTabs">
         <span slot="tab" class="header-tab">
           <span @click="change(item.path)">{{item.meta.title}}</span>
-          <a-icon type="close" style="position:relative;margin-right:-10px;margin-left:6px" @click="removeTab(item)" />
+          <a-icon type="close" style="position:relative;margin-right:-10px;margin-left:6px;width:14px;height:14px;display:inline-block" @click="removeTab(item)" />
         </span>
+        <div style="padding:10px 20px;" v-if="item.type === 'iframe'" :style="{'height':iframeHeight+'px'}">
+          <iframe id="external-frame" :src="item.iframeUrl" width="100%" height="100%" frameborder="0" scrolling="yes">
+          </iframe>
+        </div>
       </a-tab-pane>
       <div style="height:35px;width:35px;text-align:center;background:#f0f0f0;cursor:pointer" slot="tabBarExtraContent">
         <a-dropdown>
@@ -29,7 +33,7 @@
         </a-dropdown>
       </div>
     </a-tabs>
-    <div style="padding:10px 20px">
+    <div style="padding:10px 20px;" v-if="!activeTabObj.type">
       <router-view>
       </router-view>
     </div>
@@ -38,12 +42,20 @@
 
 <script>
 export default {
+  data() {
+    return {
+      iframeHeight: 600
+    }
+  },
   computed: {
     navTabs() {
       return this.$store.state.sys.navTabs
     },
     activeTab() {
       return this.$store.state.sys.activeTab
+    },
+    activeTabObj() {
+      return this.$store.getters.activeTabObj
     }
   },
   watch: {
@@ -54,6 +66,18 @@ export default {
     }
   },
   methods: {
+    setIframeHeight(iframe) {
+      alert(1)
+      if (iframe) {
+        var iframeWin =
+          iframe.contentWindow || iframe.contentDocument.parentWindow
+        if (iframeWin.document.body) {
+          iframe.height =
+            iframeWin.document.documentElement.scrollHeight ||
+            iframeWin.document.body.scrollHeight
+        }
+      }
+    },
     change(val) {
       this.$store.commit('ACTIVE_TAB', val)
     },
@@ -70,12 +94,19 @@ export default {
       this.$store.commit('CLOSE_ALL_TAG')
     },
     refreshCurrTag() {
-      this.$store.commit('CLOSE_CURR_TAG')
-      // let tempActive = this.activeTab
-      // this.closeCurrTag()
+      // 创建临时变量保存当前的activeTag 然后删除当前 再添加临时变量
+      this.$store.commit('SET_CURR_TAG')
       this.$nextTick(() => {
         this.$store.commit('REFRESH_CURR_TAG')
       })
+    }
+  },
+  created() {
+    this.iframeHeight = document.body.clientHeight
+    console.log(this.iframeHeight)
+    window.onresize = function() {
+      this.iframeHeight = document.body.clientHeight
+      console.log(this.iframeHeight)
     }
   }
 }
