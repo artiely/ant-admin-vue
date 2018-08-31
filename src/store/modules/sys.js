@@ -9,10 +9,12 @@ const state = {
   /**
    * 布局
    */
-  layout: '固定布局',
+  layoutFixed: true,
   isCollapse: false, // 菜单状态是否收起
   settingVisible: true, // 设置
   isMobile: false, // 是否小屏
+  documentClientHeight: 0,
+  documentBodyClientHeight: 0,
   /**
    * 权限
    */
@@ -27,6 +29,7 @@ const state = {
   activeTab: '',
   tempObj: {},
   currTabIndex: 0,
+  breadcrumbMode: false,
   /**
    * 主题
    */
@@ -170,6 +173,9 @@ const mutations = {
       }
     }
   },
+  [types.BREADCRUMB](state, payload) {
+    state.breadcrumbMode = payload || !state.breadcrumbMode
+  },
   /*
   主题相关
   */
@@ -197,6 +203,15 @@ const mutations = {
   [types.LAYOUT](state, payload) {
     state.layout = payload
     Cookies.set('layout', payload)
+  },
+  [types.UPDATE_CLICENT_HEIGHT](state, payload) {
+    state.documentClientHeight = payload
+  },
+  [types.UPDATE_BODY_CLICENT_HEIGHT](state, payload) {
+    state.documentBodyClientHeight = payload
+  },
+  [types.LAYOUT_FIXED](state, payload) {
+    state.layoutFixed = payload || !state.layoutFixed
   },
   /*
   当前菜单(主要是注销时清空)

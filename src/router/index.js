@@ -166,6 +166,7 @@ const router = new Router({
 // 处理登录
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  console.log('to', to)
   // if (to.meta.auth) {
   //   // 登录验证 有token就一定有角色
   //   let token = Cookies.get('access_token')

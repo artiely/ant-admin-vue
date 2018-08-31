@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row :gutter="24">
-      <a-col :xs="24" :sm="12" :md="12" :lg="6" v-for="i in 4" :key="i">
+      <a-col :xs="24" :sm="12" :md="12" :lg="6" v-for="i in 9" :key="i">
         <a-card :bordered="false" style="margin-bottom:24px;">
           <p>Card content</p>
           <p>Card content</p>

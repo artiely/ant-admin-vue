@@ -4,9 +4,9 @@
       <img :src="require('../../assets/logo.svg')" alt="logo">
       <h1 v-if="!collapsed">Ant Design Pro</h1>
     </div>
-    <a-menu @click="handleMenu" v-model="activeTab" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme">
-      <template v-for="(item,index) in menu">
-        <a-sub-menu :key="index" v-if="item.children" :obj="item">
+    <a-menu @click="handleMenu" v-model="activeTab" :defaultSelectedKeys="defaultPath" :mode="menuMode" :theme="menuTheme" :openKeys="openKeys" @openChange="onOpenChange">
+      <template v-for="item in menu">
+        <a-sub-menu :key="item.path" v-if="item.children" :obj="item">
           <span slot="title">
             <a-icon :type="item.meta.icon" v-if="item.meta.icon" />
             <span>{{item.meta.title}}</span>
@@ -37,7 +37,9 @@ export default {
   data() {
     return {
       collapsed: false,
-      defaultPath: []
+      defaultPath: [],
+      openKeys: [],
+      rootSubmenuKeys: []
     }
   },
   computed: {
@@ -69,6 +71,22 @@ export default {
       set: function() {}
     }
   },
+  watch: {
+    $route: {
+      handler() {
+        this.openKeys = ['/' + this.$route.path.split('/')[1]]
+      }
+    },
+    isCollapse: {
+      handler(val) {
+        if (val) {
+          this.openKeys = []
+        } else {
+          this.openKeys = ['/' + this.$route.path.split('/')[1]]
+        }
+      }
+    }
+  },
   methods: {
     handleMenu(item, key) {
       this.$router.push(item.key)
@@ -77,6 +95,9 @@ export default {
     logout() {
       Cookies.remove('access_token')
       this.$router.replace('/login')
+    },
+    onOpenChange(openKeys) {
+      this.openKeys = openKeys
     }
   },
   mounted() {
@@ -127,10 +148,10 @@ export default {
       }
     }
     mediaQuery.init()
-    // defaultPath
-    console.log('defaultPath', this.$route.path)
+    //
     this.defaultPath = [this.$route.path]
     this.key = [this.$route.path]
+    this.openKeys = ['/' + this.$route.path.split('/')[1]]
   }
 }
 </script>

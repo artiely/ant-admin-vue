@@ -1,12 +1,12 @@
 <template>
-  <a-layout-content :style="{padding: '0', minHeight: '100vh' }">
-    <a-tabs v-if="navTabs.length>0 && isTabMode" class="header-tabs" :activeKey="activeTab" defaultActiveKey="1" tabPosition="top" size="small" :tabBarGutter="10" :animated="false" :tabBarStyle="{'background':'#f8f8f8'}">
+  <a-layout-content :style="{padding: '0', 'height':documentBodyClientHeight+'px'}">
+    <a-tabs v-if="navTabs.length>0 && isTabMode" class="header-tabs" :activeKey="activeTab" defaultActiveKey="1" tabPosition="top" size="small" :tabBarGutter="10" :animated="false" :tabBarStyle="{'background':'#f8f8f8','margin':'0'}">
       <a-tab-pane :key="item.path" v-for="item in navTabs">
         <span slot="tab" class="header-tab">
           <span @click="change(item.path)">{{item.meta.title}}</span>
           <a-icon type="close" style="position:relative;margin-right:-10px;margin-left:6px;width:14px;height:14px;display:inline-block" @click="removeTab(item)" />
         </span>
-        <div style="padding:10px 20px;" v-if="item.type === 'iframe'" :style="{'height':iframeHeight+'px'}">
+        <div style="padding:10px 20px;" v-if="item.type === 'iframe'" :style="{'height':documentBodyClientHeight+'px'}">
           <iframe id="external-frame" :src="item.iframeUrl" width="100%" height="100%" frameborder="0" scrolling="yes">
           </iframe>
         </div>
@@ -33,7 +33,18 @@
         </a-dropdown>
       </div>
     </a-tabs>
-    <div style="padding:10px 20px;" v-if="!activeTabObj.type">
+    <div style="padding:5px 20px;" v-if="!activeTabObj.type" :style="fixedStyle">
+      <a-breadcrumb style="margin:0 0 10px 0" v-if="breadcrumbMode">
+        <a-breadcrumb-item v-for="item in $route.matched" :key="item.path">
+          <span v-if="item.name=='Home'">
+            <a-icon type="home" /> 首页
+          </span>
+          <a-icon :type="item.meta.icon" v-else/>
+          <span>
+            {{item.meta.title}}
+          </span>
+        </a-breadcrumb-item>
+      </a-breadcrumb>
       <router-view>
       </router-view>
     </div>
@@ -48,8 +59,36 @@ export default {
     }
   },
   computed: {
+    fixedStyle() {
+      if (this.$store.state.sys.layoutFixed) {
+        return {
+          height: this.documentBodyClientHeight + 'px',
+          'overflow-y': 'scroll'
+        }
+      } else {
+        return { height: 'auto' }
+      }
+    },
     navTabs() {
       return this.$store.state.sys.navTabs
+    },
+    layoutFixed() {
+      return this.$store.state.sys.layoutFixed
+    },
+    documentClientHeight: {
+      get() {
+        return this.$store.state.sys.documentClientHeight
+      },
+      set() {}
+    },
+    documentBodyClientHeight: {
+      get() {
+        return this.$store.state.sys.documentBodyClientHeight
+      },
+      set() {}
+    },
+    breadcrumbMode() {
+      return this.$store.state.sys.breadcrumbMode
     },
     activeTab() {
       return this.$store.state.sys.activeTab
@@ -70,7 +109,6 @@ export default {
   },
   methods: {
     setIframeHeight(iframe) {
-      alert(1)
       if (iframe) {
         var iframeWin =
           iframe.contentWindow || iframe.contentDocument.parentWindow

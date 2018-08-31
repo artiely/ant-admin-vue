@@ -19,3 +19,7 @@ export const CLOSE_ALL_TAG = 'CLOSE_ALL_TAG' // 布局
 export const REFRESH_CURR_TAG = 'REFRESH_CURR_TAG' // 布局
 export const SET_CURR_TAG = 'SET_CURR_TAG' // 布局
 export const TAB_MODE = 'TAB_MODE' // 布局
+export const BREADCRUMB = 'BREADCRUMB' // 布局
+export const UPDATE_CLICENT_HEIGHT = 'UPDATE_CLICENT_HEIGHT' // 布局
+export const UPDATE_BODY_CLICENT_HEIGHT = 'UPDATE_BODY_CLICENT_HEIGHT' // 布局
+export const LAYOUT_FIXED = 'LAYOUT_FIXED' // 布局

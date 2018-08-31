@@ -19,8 +19,9 @@
         <a-radio :style="radioStyle" value="dark">黑色</a-radio>
       </a-radio-group>
       <v-cell title="标签页模式" mode="switch" v-model="isTabMode"></v-cell>
+      <v-cell title="是否固定布局" mode="switch" v-model="layoutFixed"></v-cell>
       <v-cell title="内联菜单模式" mode="switch" v-model="menuMode"></v-cell>
-      <v-cell title="面包屑模式" mode="switch" v-model="menuMode"></v-cell>
+      <v-cell title="面包屑模式" mode="switch" v-model="breadcrumbMode"></v-cell>
     </div>
   </v-drawer>
 </template>
@@ -40,6 +41,14 @@ export default {
     settingVisible() {
       return this.$store.state.sys.settingVisible
     },
+    layoutFixed: {
+      get() {
+        return this.$store.state.sys.layoutFixed
+      },
+      set(val) {
+        this.$store.commit('LAYOUT_FIXED', val)
+      }
+    },
     menuTheme() {
       return this.$store.state.sys.menuTheme
     },
@@ -49,6 +58,14 @@ export default {
       },
       set(val) {
         this.$store.commit('MENU_MODE', val)
+      }
+    },
+    breadcrumbMode: {
+      get() {
+        return this.$store.state.sys.breadcrumbMode
+      },
+      set(val) {
+        this.$store.commit('BREADCRUMB', val)
       }
     },
     headerTheme() {
