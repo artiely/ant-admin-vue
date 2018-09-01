@@ -1,12 +1,14 @@
 <template>
   <div class="v-cell">
+    <div class="v-cell--icon" v-if="leftIcon||leftIconSymbol">
+      <v-icon :name="leftIcon?leftIcon:leftIconSymbol" :symbol="leftIconSymbol?true:false" style="font-size:18px;margin-right:4px;"></v-icon>
+    </div>
     <div class="v-cell--title">
       {{title}}
     </div>
     <div class="v-cell--value">
       <a-switch size="small" :defaultChecked="value" @change="handleSwitch" v-if="mode=='switch'" />
     </div>
-
   </div>
 </template>
 
@@ -16,6 +18,8 @@ export default {
     title: {
       type: String
     },
+    leftIcon: String,
+    leftIconSymbol: String,
     mode: {
       type: String,
       default: 'value'

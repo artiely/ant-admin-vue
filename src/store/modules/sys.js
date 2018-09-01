@@ -10,6 +10,7 @@ const state = {
    * 布局
    */
   layoutFixed: true,
+  menuFixed: false,
   isCollapse: false, // 菜单状态是否收起
   settingVisible: true, // 设置
   isMobile: false, // 是否小屏
@@ -212,6 +213,9 @@ const mutations = {
   },
   [types.LAYOUT_FIXED](state, payload) {
     state.layoutFixed = payload || !state.layoutFixed
+  },
+  [types.MENU_FIXED](state, payload) {
+    state.menuFixed = payload || !state.menuFixed
   },
   /*
   当前菜单(主要是注销时清空)

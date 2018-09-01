@@ -4,9 +4,6 @@
     <a-layout>
       <a-header/>
       <a-content/>
-      <!-- <a-layout-footer style="text-align: center">
-        Ant Design ©2016 Created by Ant UED
-      </a-layout-footer> -->
     </a-layout>
     <drawer-setting></drawer-setting>
   </a-layout>

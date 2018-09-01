@@ -1,8 +1,8 @@
 <template>
-  <span class="cb-icon--wrapper">
-    <i class="icon iconfont" :class="name" :style="'font-size:'+size+'px;color:'+color"></i>
-    <slot></slot>
-  </span>
+  <svg class="icon" aria-hidden="true" v-if="symbol">
+    <use :xlink:href="'#'+name"></use>
+  </svg>
+  <i v-else class="icon iconfont" :class="name" :style="'font-size:'+size+'px;color:'+color"></i>
 </template>
 <script>
 export default {
@@ -11,6 +11,10 @@ export default {
     name: {
       type: String,
       default: ''
+    },
+    symbol: {
+      type: Boolean,
+      default: false
     },
     size: {
       type: [Number, String]
@@ -22,15 +26,11 @@ export default {
 }
 </script>
 <style lang="less">
-.cb-icon--wrapper {
-  display: inline-block;
-  font-size: 16px;
-  .icon {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    fill: currentColor;
-    overflow: hidden;
-  }
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 </style>

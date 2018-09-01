@@ -74,7 +74,11 @@ export default {
   watch: {
     $route: {
       handler() {
-        this.openKeys = ['/' + this.$route.path.split('/')[1]]
+        if (this.isCollapse) {
+          this.openKeys = []
+        } else {
+          this.openKeys = ['/' + this.$route.path.split('/')[1]]
+        }
       }
     },
     isCollapse: {

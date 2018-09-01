@@ -1,27 +1,17 @@
 <template>
   <v-drawer :isCollapse="settingVisible" placement="right" @change="close">
     <div class="drawer-setting-wrapper">
-      <a-icon type="close-circle" @click="close" />
+      <a-icon type="close-circle" style="font-size:30px;color:#666;cursor:pointer" @click="close" />
       <a-divider orientation="left">布局风格</a-divider>
-      <a-radio-group @change="onChangeTheme" v-model="menuTheme">
-        <a-radio :style="radioStyle" value="light">流式布局</a-radio>
-        <a-radio :style="radioStyle" value="dark">固定布局</a-radio>
-      </a-radio-group>
-
-      <a-divider orientation="left">菜单颜色</a-divider>
-      <a-radio-group @change="onChangeTheme" v-model="menuTheme">
-        <a-radio :style="radioStyle" value="light">白色</a-radio>
-        <a-radio :style="radioStyle" value="dark">黑色</a-radio>
-      </a-radio-group>
-      <a-divider orientation="left">导航颜色</a-divider>
-      <a-radio-group @change="onChangeHeaderThemee" v-model="headerTheme">
-        <a-radio :style="radioStyle" value="light">白色</a-radio>
-        <a-radio :style="radioStyle" value="dark">黑色</a-radio>
-      </a-radio-group>
-      <v-cell title="标签页模式" mode="switch" v-model="isTabMode"></v-cell>
-      <v-cell title="是否固定布局" mode="switch" v-model="layoutFixed"></v-cell>
-      <v-cell title="内联菜单模式" mode="switch" v-model="menuMode"></v-cell>
-      <v-cell title="面包屑模式" mode="switch" v-model="breadcrumbMode"></v-cell>
+      <v-cell title="顶部导航主题" mode="switch" v-model="headerTheme" left-icon-symbol="icon-daohang"></v-cell>
+      <v-cell title="菜单主题" mode="switch" v-model="menuTheme" left-icon-symbol="icon-caidan"></v-cell>
+      <v-cell title="标签页模式" mode="switch" v-model="isTabMode" left-icon-symbol="icon-biaoqian1"></v-cell>
+      <v-cell title="面包屑模式" mode="switch" v-model="breadcrumbMode" left-icon-symbol="icon-bread"></v-cell>
+      <v-cell title="固定布局模式" mode="switch" v-model="layoutFixed" left-icon-symbol="icon-yemiantoubu"></v-cell>
+      <v-cell title="固定菜单模式" mode="switch" v-if="!layoutFixed" v-model="menuFixed" left-icon-symbol="icon-caidanfenlei"></v-cell>
+      <v-icon name="icon-qingchugeshi"></v-icon>
+      <v-icon name="icon-daohang" symbol></v-icon>
+      <!-- <v-cell title="内联菜单模式" mode="switch" v-model="menuMode"></v-cell> -->
     </div>
   </v-drawer>
 </template>
@@ -49,8 +39,29 @@ export default {
         this.$store.commit('LAYOUT_FIXED', val)
       }
     },
-    menuTheme() {
-      return this.$store.state.sys.menuTheme
+    menuFixed: {
+      get() {
+        return this.$store.state.sys.menuFixed
+      },
+      set(val) {
+        this.$store.commit('MENU_FIXED', val)
+      }
+    },
+    menuTheme: {
+      get() {
+        return this.$store.state.sys.menuTheme === 'light'
+      },
+      set(val) {
+        this.$store.commit('MENU_THEME', val)
+      }
+    },
+    headerTheme: {
+      get() {
+        return this.$store.state.sys.headerTheme === 'light'
+      },
+      set(val) {
+        this.$store.commit('HEADER_THEME', val)
+      }
     },
     menuMode: {
       get() {
@@ -68,9 +79,6 @@ export default {
         this.$store.commit('BREADCRUMB', val)
       }
     },
-    headerTheme() {
-      return this.$store.state.sys.headerTheme
-    },
     isTabMode: {
       get() {
         return this.$store.state.sys.isTabMode
@@ -83,12 +91,6 @@ export default {
   methods: {
     close() {
       this.$store.commit('SETTING_VISIBLE')
-    },
-    onChangeTheme() {
-      this.$store.commit('MENU_THEME')
-    },
-    onChangeHeaderThemee() {
-      this.$store.commit('HEADER_THEME')
     }
   },
   mounted() {}

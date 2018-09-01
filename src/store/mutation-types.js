@@ -23,3 +23,4 @@ export const BREADCRUMB = 'BREADCRUMB' // 布局
 export const UPDATE_CLICENT_HEIGHT = 'UPDATE_CLICENT_HEIGHT' // 布局
 export const UPDATE_BODY_CLICENT_HEIGHT = 'UPDATE_BODY_CLICENT_HEIGHT' // 布局
 export const LAYOUT_FIXED = 'LAYOUT_FIXED' // 布局
+export const MENU_FIXED = 'MENU_FIXED' // 布局

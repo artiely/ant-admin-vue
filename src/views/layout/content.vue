@@ -1,15 +1,15 @@
 <template>
-  <a-layout-content :style="{padding: '0', 'height':documentBodyClientHeight+'px'}">
+  <a-layout-content :style="fixedMenuStyle">
     <a-tabs v-if="navTabs.length>0 && isTabMode" class="header-tabs" :activeKey="activeTab" defaultActiveKey="1" tabPosition="top" size="small" :tabBarGutter="10" :animated="false" :tabBarStyle="{'background':'#f8f8f8','margin':'0'}">
       <a-tab-pane :key="item.path" v-for="item in navTabs">
         <span slot="tab" class="header-tab">
           <span @click="change(item.path)">{{item.meta.title}}</span>
           <a-icon type="close" style="position:relative;margin-right:-10px;margin-left:6px;width:14px;height:14px;display:inline-block" @click="removeTab(item)" />
         </span>
-        <div style="padding:10px 20px;" v-if="item.type === 'iframe'" :style="{'height':documentBodyClientHeight+'px'}">
+        <!-- <div style="padding:10px 20px;" v-if="item.type === 'iframe'" :style="{'height':documentBodyClientHeight+'px'}">
           <iframe id="external-frame" :src="item.iframeUrl" width="100%" height="100%" frameborder="0" scrolling="yes">
           </iframe>
-        </div>
+        </div> -->
       </a-tab-pane>
       <div style="height:35px;width:35px;text-align:center;background:#f0f0f0;cursor:pointer" slot="tabBarExtraContent">
         <a-dropdown>
@@ -47,7 +47,11 @@
       </a-breadcrumb>
       <router-view>
       </router-view>
+      <a-layout-footer style="text-align: center">
+        Ant Design ©2016 Created by Ant UED
+      </a-layout-footer>
     </div>
+
   </a-layout-content>
 </template>
 
@@ -67,6 +71,19 @@ export default {
         }
       } else {
         return { height: 'auto' }
+      }
+    },
+    fixedMenuStyle() {
+      if (this.$store.state.sys.fixedMenu) {
+        return {
+          height: this.documentBodyClientHeight + 'px',
+          padding: 0
+        }
+      } else {
+        return {
+          padding: 0,
+          'min-height': this.documentBodyClientHeight + 37 + 'px'
+        }
       }
     },
     navTabs() {
