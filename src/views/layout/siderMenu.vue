@@ -88,7 +88,8 @@ export default {
         } else {
           this.openKeys = ['/' + this.$route.path.split('/')[1]]
         }
-      }
+      },
+      immediate: true
     }
   },
   methods: {
@@ -135,11 +136,12 @@ export default {
         var result3 = window.matchMedia('(min-width:768px)')
         if (result1.matches) {
           // console.log('>=1200 大型设备 大台式电脑')
-          // self.$store.commit('IS_COLLAPSE', false)
+          self.$store.commit('IS_COLLAPSE', false)
           self.$store.commit('IS_MOBILE', false)
         } else if (result2.matches) {
           // console.log('992=< <=1200 中型设备 台式电脑')
           self.$store.commit('IS_MOBILE', false)
+          self.$store.commit('IS_COLLAPSE', false)
         } else if (result3.matches) {
           // console.log('768<= <=992 小型设备 平板电脑')
           self.$store.commit('IS_COLLAPSE', true)

@@ -6,10 +6,10 @@
           <span @click="change(item.path)">{{item.meta.title}}</span>
           <a-icon type="close" style="position:relative;margin-right:-10px;margin-left:6px;width:14px;height:14px;display:inline-block" @click="removeTab(item)" />
         </span>
-        <!-- <div style="padding:10px 20px;" v-if="item.type === 'iframe'" :style="{'height':documentBodyClientHeight+'px'}">
+        <div style="padding:10px 20px;margin-right:-20px" v-if="item.type === 'iframe'" :style="{'height':documentBodyClientHeight+'px'}">
           <iframe id="external-frame" :src="item.iframeUrl" width="100%" height="100%" frameborder="0" scrolling="yes">
           </iframe>
-        </div> -->
+        </div>
       </a-tab-pane>
       <div style="height:35px;width:35px;text-align:center;background:#f0f0f0;cursor:pointer" slot="tabBarExtraContent">
         <a-dropdown>
@@ -65,8 +65,9 @@ export default {
   computed: {
     fixedStyle() {
       if (this.$store.state.sys.layoutFixed) {
+        let tabsHeight = this.$store.state.sys.isTabMode ? 0 : 37
         return {
-          height: this.documentBodyClientHeight + 'px',
+          height: this.documentBodyClientHeight + tabsHeight + 'px',
           'overflow-y': 'scroll'
         }
       } else {
@@ -100,7 +101,10 @@ export default {
     },
     documentBodyClientHeight: {
       get() {
-        return this.$store.state.sys.documentBodyClientHeight
+        if (this.$store.state.sys.navTabs) {
+          return this.$store.state.sys.documentBodyClientHeight
+        }
+        return this.$store.state.sys.documentBodyClientHeight + 37
       },
       set() {}
     },

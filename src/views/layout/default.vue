@@ -13,6 +13,8 @@ import header from './header'
 import content from './content'
 import drawerSiderMenu from './drawerSiderMenu'
 import drawerSetting from './drawerSetting'
+let navTabsHeight = 37
+let headerHeight = 64
 export default {
   components: {
     'a-header': header,
@@ -36,28 +38,26 @@ export default {
   methods: {
     // 重置窗口可视高度
     resetDocumentClientHeight() {
-      // this.documentClientHeight = document.documentElement['clientHeight']
       this.$store.commit(
         'UPDATE_CLICENT_HEIGHT',
-        document.documentElement['clientHeight'] - 64 - 37
+        document.documentElement['clientHeight'] - headerHeight - navTabsHeight
       )
       window.onresize = () => {
         this.$store.commit(
           'UPDATE_CLICENT_HEIGHT',
-          document.documentElement['clientHeight'] - 64 - 37
+          document.documentElement['clientHeight'] - headerHeight - navTabsHeight
         )
       }
     },
     resetDocumentBodyClientHeight() {
-      // this.documentClientHeight = document.documentElement['clientHeight']
       this.$store.commit(
         'UPDATE_BODY_CLICENT_HEIGHT',
-        document.body['clientHeight'] - 64 - 37
+        document.body['clientHeight'] - headerHeight - navTabsHeight
       )
       window.onresize = () => {
         this.$store.commit(
           'UPDATE_BODY_CLICENT_HEIGHT',
-          document.body['clientHeight'] - 64 - 37
+          document.body['clientHeight'] - headerHeight - navTabsHeight
         )
       }
     }

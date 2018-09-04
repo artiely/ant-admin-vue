@@ -6,12 +6,19 @@
     <!-- 设置s -->
     <a-icon type="setting" class="pull-right header-action hidden-xs-only" @click="handleSetting" />
     <!-- 设置e -->
+    <!-- i18n s -->
+    <div class="pull-right">
+      <a-button ghost size="small">English</a-button>
+    </div>
+    <!-- i18n e -->
     <!-- 个人中心s -->
     <span class="pull-right header-action">
       <a-dropdown style="height:64px;display:inline-block;">
         <a class="ant-dropdown-link">
           <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="position:relative;top:10px" />
-          <a-icon type="down" />
+          <span style="font-size:16px" class="hidden-xs-only">artiely
+            <a-icon type="down" />
+          </span>
         </a>
         <a-menu slot="overlay">
           <a-menu-item key="-1">
@@ -35,8 +42,8 @@
             <a-icon type="lock" style="margin-right:4px" />锁屏
           </a-menu-item>
           <a-menu-divider />
-          <a-menu-item key="4" @click.native="logout">
-            <a-icon type="poweroff" style="margin-right:4px" />安全登录</a-menu-item>
+          <a-menu-item key="4" @click.native="logout" style="padding-right:30px">
+            <a-icon type="poweroff" style="margin-right:4px" />安全登录 </a-menu-item>
         </a-menu>
       </a-dropdown>
     </span>
@@ -81,11 +88,21 @@
       <a-icon type="mobile" class="pull-right header-action " />
     </a-popover>
     <!-- 手机e -->
+    <!-- 全屏 s -->
+    <a-tooltip placement="bottom" :title="fullscreen?'退出全屏':'全屏'" class="hidden-xs-only">
+      <a-icon :type="fullscreen?'shrink':'arrows-alt'" class="pull-right header-action " @click="toggleScreen"/>
+    </a-tooltip>
+    <!-- 全屏 e -->
   </a-layout-header>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      fullscreen: false
+    }
+  },
   computed: {
     menu() {
       return this.$store.state.sys.menu
@@ -106,6 +123,42 @@ export default {
     },
     handleSetting() {
       this.$store.commit('SETTING_VISIBLE', !this.settingVisible)
+    },
+    toggleScreen() {
+      if (!this.fullscreen) {
+        var docElm = document.documentElement
+        if (docElm.requestFullscreen) {
+          docElm.requestFullscreen()
+        } else if (docElm.mozRequestFullScreen) {
+          docElm.mozRequestFullScreen()
+        } else if (docElm.webkitRequestFullScreen) {
+          docElm.webkitRequestFullScreen()
+        } else if (docElm.msRequestFullscreen) {
+          docElm.msRequestFullscreen()
+        } else {
+          this.$message.error({
+            content: '除了让你升级浏览器对方没什么好说的！',
+            duration: 3
+          })
+        }
+        this.fullscreen = true
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen()
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen()
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen()
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen()
+        } else {
+          this.$message.error({
+            content: '请升级浏览器，不然我是不会理你的！',
+            duration: 3
+          })
+        }
+        this.fullscreen = false
+      }
     }
   }
 }
@@ -120,23 +173,23 @@ export default {
     &.ant-layout-header {
       background: #002140;
     }
-    color:#fff!important;
-    .ant-badge{
-     color:#fff!important;
+    color: #fff !important;
+    .ant-badge {
+      color: #fff !important;
     }
     .header-action {
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 15px;
-    cursor: pointer;
-    transition: color 0.3s;
-    height: 100%;
-    &:hover,
-    &:focus {
-      color: #1890ff;
-      background: #000c17;
+      font-size: 18px;
+      line-height: 64px;
+      padding: 0 15px;
+      cursor: pointer;
+      transition: color 0.3s;
+      height: 100%;
+      &:hover,
+      &:focus {
+        color: #1890ff;
+        background: #000c17;
+      }
     }
-  }
   }
   .header-action {
     font-size: 18px;
