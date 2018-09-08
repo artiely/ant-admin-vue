@@ -3,7 +3,8 @@ import * as types from '../mutation-types'
 //   asyncRouterMap
 // } from '@/router/index'
 import Cookies from 'js-cookie'
-
+import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import 'moment/locale/zh-cn'
 // initial state
 const state = {
   /**
@@ -37,7 +38,10 @@ const state = {
   menuMode: 'inline', // 菜单模式
   menuTheme: 'light', // 菜单主题
   headerTheme: 'light', // header主题
-  lang: 'zh' // 语言
+  language: {
+    label: 'Englist',
+    value: zh_CN
+  } // 语言
 }
 
 /**
@@ -234,9 +238,9 @@ const mutations = {
     // state.menu = filterAsyncRouter(asyncRouterMap, payload)
   },
   // 设置语言
-  [types.SET_LANG](state, payload) {
-    state.lang = payload
-    window.localStorage.setItem('lang', payload)
+  [types.SET_LANGUAGE](state, payload) {
+    state.language = payload
+    // window.localStorage.setItem('lang', payload)
   },
   // 登陆者信息
   [types.USER_INFO](state, payload) {

@@ -1,7 +1,9 @@
 <template>
-  <div id="app" :style="fixedMenuStyle">
-    <router-view/>
-  </div>
+  <a-locale-provider :locale="language">
+    <div id="app" :style="fixedMenuStyle">
+      <router-view/>
+    </div>
+  </a-locale-provider>
 </template>
 
 <script>
@@ -10,6 +12,9 @@ export default {
   computed: {
     fixedMenu() {
       return this.$store.state.sys.menuFixed
+    },
+    language() {
+      return this.$store.state.sys.language.value
     },
     fixedMenuStyle() {
       if (this.$store.state.sys.menuFixed) {

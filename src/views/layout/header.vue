@@ -7,8 +7,8 @@
     <a-icon type="setting" class="pull-right header-action hidden-xs-only" @click="handleSetting" />
     <!-- 设置e -->
     <!-- i18n s -->
-    <div class="pull-right">
-      <a-button ghost size="small">English</a-button>
+    <div class="pull-right" style="padding-right:10px">
+      <a-button ghost size="small" :type="headerTheme==='dark'?'':'primary'" @click="changeLang">{{language.label}}</a-button>
     </div>
     <!-- i18n e -->
     <!-- 个人中心s -->
@@ -97,6 +97,9 @@
 </template>
 
 <script>
+import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import en_US from 'ant-design-vue/lib/locale-provider/en_US'
+import 'moment/locale/zh-cn'
 export default {
   data() {
     return {
@@ -106,6 +109,9 @@ export default {
   computed: {
     menu() {
       return this.$store.state.sys.menu
+    },
+    language() {
+      return this.$store.state.sys.language
     },
     isCollapse() {
       return this.$store.state.sys.isCollapse
@@ -118,6 +124,13 @@ export default {
     }
   },
   methods: {
+    changeLang() {
+      if (this.language.label === '简体中文') {
+        this.$store.commit('SET_LANGUAGE', {label: 'English', value: zh_CN})
+      } else {
+        this.$store.commit('SET_LANGUAGE', {label: '简体中文', value: en_US})
+      }
+    },
     handleClick() {
       this.$store.commit('IS_COLLAPSE', !this.isCollapse)
     },

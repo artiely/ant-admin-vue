@@ -119,6 +119,17 @@ export const asyncRouterMap = [
           title: '高级表单'
         }
       }
+      // {
+      //   path: '/form/advanced3',
+      //   name: 'advanced',
+      //   type: 'iframe',
+      //   iframeUrl: 'http://192.168.2.109:8088/dist/about.html',
+      //   // component: lazyLoading('views/dashboard/analysis'),
+      //   meta: {
+      //     auth: true,
+      //     title: '高级表单'
+      //   }
+      // }
     ]
   }
 ]
