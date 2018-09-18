@@ -1,6 +1,6 @@
 <template>
   <div>
-    工作台
+    工作台 {{$t('message.hello')}}
     <a-time-picker use12Hours @change="onChange" />
   </div>
 </template>

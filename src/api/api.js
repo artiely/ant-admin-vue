@@ -7,93 +7,76 @@ import fetch from './fetch'
  */
 const LOGIN = params => {
   return fetch({
-    url: '/v1/clients/web/admin/login',
+    url: '/sys/login',
+    method: 'post',
+    data: params
+  })
+}
+var isProduction = process.env.NODE_ENV === 'production'
+const baseURL = isProduction ? 'http://182.61.137.53:9003/ucar' : '/ucar'
+const CAPTCHA = () => {
+  return baseURL + '/captcha.jpg?uuid='
+}
+
+/**
+ * 修改密码
+ * @param {String} password
+ * @param {String} newPassword
+ */
+const USER_INFO = params => {
+  return fetch({
+    url: '/sys/user/info',
+    method: 'get',
+    params: params
+  })
+}
+
+/**
+ * 修改密码
+ * @param {String} password
+ * @param {String} newPassword
+ */
+const UPDATE_PASSWORD = params => {
+  return fetch({
+    url: '/sys/user/password',
     method: 'post',
     data: params
   })
 }
 
-const ORDER_LIST = params => {
-  return fetch({ url: '/v1/orders', method: 'get', params: params })
+/**
+ * 导航菜单列表
+ * @param {String} password
+ * @param {String} newPassword
+ */
+const MENU_NAV = params => {
+  return fetch({
+    url: '/sys/menu/nav',
+    method: 'get',
+    params: params
+  })
 }
 
-const STORE_LIST = params => {
-  return fetch({ url: '/v1/stores', method: 'get', params: params })
-}
-
-const BOX_LIST = params => {
-  return fetch({ url: '/v1/boxes', method: 'get', params: params })
-}
-
-const CHARGE_LIST = params => {
-  return fetch({ url: '/v1/chargers', method: 'get', params: params })
-}
-
-const BOXTYPE_LIST = params => {
-  return fetch({ url: '/v1/boxtypes', method: 'get', params: params })
-}
-
-const MEMBER_LIST = params => {
-  return fetch({ url: '/v1/members', method: 'get', params: params })
-}
-
-const DEPOSITLOG_LIST = params => {
-  return fetch({ url: '/v1/depositlogs', method: 'get', params: params })
-}
-
-const SETTING_LIST = params => {
-  return fetch({ url: '/v1/settings', method: 'get', params: params })
-}
-
-const USER_INFO = params => {
-  return fetch({ url: '/v1/user/profile', method: 'get', params: params })
-}
-
-const BOX_QRCODE = params => {
-  return fetch({ url: '/v1/boxes/qrcode', method: 'get', params: params })
-}
-
-const BOX_DOWNLOAD_IMG = params => {
-  return fetch({ url: '/v1/boxes/downloadimg', method: 'get', params: params })
-}
-
-const ORDER_PUT_POST = params => {
-  if (!params.id) {
-    return fetch({ url: `/v1/stores/`, method: 'post', data: params })
-  }
-  return fetch({ url: `/v1/stores/${params.id}`, method: 'put', data: params })
-}
-
-const BOX_PUT_POST = params => {
-  if (!params.id) {
-    return fetch({ url: `/v1/boxes/`, method: 'post', data: params })
-  }
-  return fetch({ url: `/v1/boxes/${params.id}`, method: 'put', data: params })
-}
-
-const BOXTYPE_PUT_POST = params => {
-  if (!params.id) {
-    return fetch({ url: `/v1/boxtypes/`, method: 'post', data: params })
-  }
-  return fetch({ url: `/v1/boxtypes/${params.id}`, method: 'put', data: params })
+/**
+ * 导航菜单列表
+ * @param {String} password
+ * @param {String} newPassword
+ */
+const MENU_LIST = params => {
+  return fetch({
+    url: '/sys/menu/list',
+    method: 'get',
+    params: params
+  })
 }
 
 const apiList = {
   LOGIN,
-  ORDER_LIST,
-  STORE_LIST,
-  BOX_LIST,
-  CHARGE_LIST,
-  BOXTYPE_LIST,
-  MEMBER_LIST,
-  DEPOSITLOG_LIST,
-  SETTING_LIST,
-  ORDER_PUT_POST,
-  BOX_PUT_POST,
-  BOXTYPE_PUT_POST,
+  CAPTCHA,
+  UPDATE_PASSWORD,
+  MENU_NAV,
   USER_INFO,
-  BOX_QRCODE,
-  BOX_DOWNLOAD_IMG
+  MENU_LIST
 }
 
 export default apiList

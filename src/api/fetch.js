@@ -1,13 +1,13 @@
 import axios from 'axios'
-// import router from '@/router'
+import router from '@/router'
 import Cookies from 'js-cookie'
 import NProgress from 'nprogress'
 import { notification } from 'ant-design-vue'
 import 'nprogress/nprogress.css'
 // import isJSON from 'is-json'
-// var isProduction = process.env.NODE_ENV === 'production'
-// const baseURL = isProduction ? 'http://localhost:9111' : 'http://localhost:9111'
-const baseURL = 'https://charger.91231.net'
+var isProduction = process.env.NODE_ENV === 'production'
+const baseURL = isProduction ? 'http://182.61.137.53:9003/ucar' : '/ucar'
+// const baseURL = 'https://charger.91231.net'
 
 export default function fetch(options) {
   return new Promise((resolve, reject) => {
@@ -19,7 +19,8 @@ export default function fetch(options) {
       },
       validateStatus: function(status) {
         console.log('status', status)
-        return status >= 200 && status < 500 // default
+        // return status >= 200 && status < 500 // default
+        return status === 200
       },
       transformResponse: [
         //   (data) => {
@@ -44,11 +45,11 @@ export default function fetch(options) {
     instance.interceptors.request.use(
       config => {
         NProgress.start()
-        const token = Cookies.get('access_token')
+        const token = Cookies.get('token')
         // console.log('----', token)
         // 这里将token设置到headers中，header的key是Authorization，这个key值根据你的需要进行修改即可
         if (token) {
-          config.headers.Authorization = `Bearer ${token}`
+          config.headers.token = `${token}`
         }
         return config
       },
@@ -73,10 +74,21 @@ export default function fetch(options) {
     instance(options)
       .then(res => {
         NProgress.done()
-        if (res.status !== 200) {
+        if (res.data.code === 401) {
           notification['error']({
-            message: '好像出错了',
-            description: res.data.message
+            message: '登录已过期',
+            placement: 'bottomRight',
+            description: res.data.msg
+          })
+          Cookies.remove('token')
+          router.replace({
+            name: 'Login'
+          })
+        } else if (res.data.code === 500) {
+          notification['error']({
+            message: '出错了',
+            placement: 'bottomRight',
+            description: res.data.msg
           })
         }
         resolve(res.data)

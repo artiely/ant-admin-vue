@@ -5,6 +5,7 @@ import * as types from '../mutation-types'
 import Cookies from 'js-cookie'
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import 'moment/locale/zh-cn'
+import api from '@/api/api'
 // initial state
 const state = {
   /**
@@ -240,7 +241,9 @@ const mutations = {
   // 设置语言
   [types.SET_LANGUAGE](state, payload) {
     state.language = payload
+    state.navTabs = [] // 这里是为了解决navTabs 无法被翻译的问题 （FIXME: 可以重新匹配赋值）
     // window.localStorage.setItem('lang', payload)
+    window.location.reload()
   },
   // 登陆者信息
   [types.USER_INFO](state, payload) {
@@ -249,7 +252,30 @@ const mutations = {
 }
 
 // actions
-const actions = {}
+const actions = {
+  getMenuNav({
+    commit
+  }, payload) {
+    return new Promise((resolve, reject) => {
+      api.MENU_NAV().then(res => {
+        // commit('SET_SKU_LIST_CARD', payload)
+        console.log('当前的菜单列表', res)
+        resolve()
+      })
+    })
+  },
+  getMenuList({
+    commit
+  }, payload) {
+    return new Promise((resolve, reject) => {
+      api.MENU_LIST().then(res => {
+        // commit('SET_SKU_LIST_CARD', payload)
+        console.log('当前的菜单列表2', res)
+        resolve(res)
+      })
+    })
+  }
+}
 
 export default {
   state,

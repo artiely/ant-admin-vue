@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 import Login from '@/views/auth/Login'
 import E404 from '@/views/auth/E404'
 import Home from '@/views/layout/default'
 import RouterView from '@/views/layout/routerView'
 import store from '@/store'
 import NProgress from 'nprogress'
+import i18n from '../i18n/index'
 // import {notification} from 'ant-design-vue'
 
 Vue.use(Router)
@@ -44,7 +45,7 @@ export const asyncRouterMap = [
     component: RouterView,
     meta: {
       auth: true,
-      title: '主页',
+      title: i18n.tc('message.dashboard'),
       icon: 'ant-design',
       visible: true
     },
@@ -55,7 +56,7 @@ export const asyncRouterMap = [
         component: lazyLoading('views/dashboard/workplace'),
         meta: {
           auth: true,
-          title: '工作台',
+          title: i18n.tc('message.workplace'),
           icon: 'laptop'
         }
       },
@@ -65,8 +66,31 @@ export const asyncRouterMap = [
         component: lazyLoading('views/dashboard/analysis'),
         meta: {
           auth: true,
-          title: '分析页',
+          title: i18n.tc('message.analysis'),
           icon: 'line-chart'
+        }
+      }
+    ]
+  },
+  {
+    path: '/sys',
+    name: 'sys',
+    component: RouterView,
+    meta: {
+      auth: true,
+      title: '系统管理',
+      icon: 'ant-design',
+      visible: true
+    },
+    children: [
+      {
+        path: '/sys/sysmenu',
+        name: 'workplace',
+        component: lazyLoading('views/sys/sysMenu'),
+        meta: {
+          auth: true,
+          title: '菜单管理',
+          icon: 'laptop'
         }
       }
     ]
@@ -77,7 +101,7 @@ export const asyncRouterMap = [
     component: RouterView,
     meta: {
       auth: true,
-      title: '表单页',
+      title: i18n.tc('message.form'),
       icon: 'form'
     },
     children: [
@@ -87,7 +111,7 @@ export const asyncRouterMap = [
         component: lazyLoading('views/form/basic'),
         meta: {
           auth: true,
-          title: '表单页'
+          title: i18n.tc('message.basic')
         }
       },
       {
@@ -96,7 +120,7 @@ export const asyncRouterMap = [
         component: lazyLoading('views/form/step'),
         meta: {
           auth: true,
-          title: '分步表单'
+          title: i18n.tc('message.step')
         }
       },
       {
@@ -105,7 +129,7 @@ export const asyncRouterMap = [
         component: lazyLoading('views/form/advanced'),
         meta: {
           auth: true,
-          title: '高级表单'
+          title: i18n.tc('message.advanced')
         }
       },
       {
@@ -144,7 +168,7 @@ let constantRouterMap = [
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: 'index',
+    redirect: '/login',
     children: asyncRouterMap
   },
   {
@@ -177,27 +201,26 @@ const router = new Router({
 // 处理登录
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  console.log('to', to)
-  // if (to.meta.auth) {
-  //   // 登录验证 有token就一定有角色
-  //   let token = Cookies.get('access_token')
-  //   if (token) {
-  //     next({
-  //       query: {
-  //         redirect: to.fullPath
-  //       }
-  //     })
-  //   } else {
-  //     next({
-  //       path: '/login',
-  //       query: {
-  //         redirect: to.fullPath
-  //       }
-  //     })
-  //   }
-  // } else {
-  next()
-  // }
+  if (to.meta.auth) {
+    // 登录验证 有token就一定有角色
+    let token = Cookies.get('token')
+    if (token) {
+      next({
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  } else {
+    next()
+  }
 })
 router.afterEach(() => {
   NProgress.done() // finish progress bar

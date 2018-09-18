@@ -170,6 +170,8 @@ export default {
       this.iframeHeight = document.body.clientHeight
       console.log(this.iframeHeight)
     }
+    this.$store.dispatch('getMenuNav')
+    this.$store.dispatch('getMenuList')
   }
 }
 </script>

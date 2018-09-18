@@ -9,6 +9,8 @@ import './assets/style/main.less'
 import './assets/style/display.css'
 // import './assets/iconfont/iconfont.css'
 import Api from './api'
+import i18n from './i18n'
+
 // import * as filters from './filter'
 Vue.config.productionTip = false
 Vue.use(Antd)
@@ -17,11 +19,10 @@ Vue.use(Api)
 //   Vue.filter(key, filters[key])
 // })
 Vue.use(OwnUi)
-Vue.config.productionTip = false
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  i18n,
   router,
   store,
   render: h => h(App)

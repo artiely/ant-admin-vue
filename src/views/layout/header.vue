@@ -7,8 +7,8 @@
     <a-icon type="setting" class="pull-right header-action hidden-xs-only" @click="handleSetting" />
     <!-- 设置e -->
     <!-- i18n s -->
-    <div class="pull-right" style="padding-right:10px">
-      <a-button ghost size="small" :type="headerTheme==='dark'?'':'primary'" @click="changeLang">{{language.label}}</a-button>
+    <div class="pull-right" style="padding-right:10px;">
+      <a-button ghost size="small" style="width:72px;" :type="headerTheme==='dark'?'':'primary'" @click="changeLang">{{language.label}}</a-button>
     </div>
     <!-- i18n e -->
     <!-- 个人中心s -->
@@ -41,8 +41,11 @@
           <a-menu-item key="3" disabled>
             <a-icon type="lock" style="margin-right:4px" />锁屏
           </a-menu-item>
+          <a-menu-item key="4" @click.native="visible=true">
+            <a-icon type="safety" style="margin-right:4px"/>修改密码
+          </a-menu-item>
           <a-menu-divider />
-          <a-menu-item key="4" @click.native="logout" style="padding-right:30px">
+          <a-menu-item key="5" @click.native="logout" style="padding-right:30px">
             <a-icon type="poweroff" style="margin-right:4px" />安全登录 </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -93,6 +96,23 @@
       <a-icon :type="fullscreen?'shrink':'arrows-alt'" class="pull-right header-action " @click="toggleScreen"/>
     </a-tooltip>
     <!-- 全屏 e -->
+    <!-- 修改密码 s -->
+    <a-modal
+      title="修改密码"
+      :visible="visible"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+    <a-form :autoFormCreate="(form)=>{this.form = form}">
+        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="formItemLayout.wrapperCol" label='原密码' fieldDecoratorId="password" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入原密码'}]}">
+          <a-input placeholder='请输入原密码'  type="password" />
+        </a-form-item>
+        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="formItemLayout.wrapperCol" label='新密码' fieldDecoratorId="newPassword" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入新密码' }]}">
+          <a-input placeholder='请输入新密码' type="password" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
+    <!-- 修改密码 e -->
   </a-layout-header>
 </template>
 
@@ -100,10 +120,23 @@
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import en_US from 'ant-design-vue/lib/locale-provider/en_US'
 import 'moment/locale/zh-cn'
+import i18n from '../../i18n/index'
+import Cookies from 'js-cookie'
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 }
+}
+const formTailLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18, offset: 6 }
+}
 export default {
   data() {
     return {
-      fullscreen: false
+      fullscreen: false,
+      formItemLayout,
+      formTailLayout,
+      visible: false
     }
   },
   computed: {
@@ -124,11 +157,33 @@ export default {
     }
   },
   methods: {
+    handleOk() {
+      this.form.validateFields(async(err, vals) => {
+        if (!err) {
+          this.loading = true
+          console.log(vals)
+          let res = await this.$api.UPDATE_PASSWORD(vals)
+          if (res.code === 0) {
+            this.$message.success(`密码已修改`)
+            this.visible = false
+            this.form.resetFields()
+          } else {
+            this.$message.error(res.msg)
+          }
+          this.loading = false
+        }
+      })
+    },
+    handleCancel() {
+      this.visible = false
+    },
     changeLang() {
       if (this.language.label === '简体中文') {
         this.$store.commit('SET_LANGUAGE', {label: 'English', value: zh_CN})
+        i18n.locale = 'cn'
       } else {
         this.$store.commit('SET_LANGUAGE', {label: '简体中文', value: en_US})
+        i18n.locale = 'en'
       }
     },
     handleClick() {
@@ -136,6 +191,10 @@ export default {
     },
     handleSetting() {
       this.$store.commit('SETTING_VISIBLE', !this.settingVisible)
+    },
+    logout() {
+      Cookies.remove('token')
+      this.$router.replace('/login')
     },
     toggleScreen() {
       if (!this.fullscreen) {

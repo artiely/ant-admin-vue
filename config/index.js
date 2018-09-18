@@ -12,7 +12,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/ucar': {
+        target: 'http://182.61.137.53:9003', //jj
+        changeOrigin: true,
+        pathRewrite: {
+          // '^/ucar': '/ucar'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: (_localhost || 'localhost'), // can be overwritten by process.env.HOST

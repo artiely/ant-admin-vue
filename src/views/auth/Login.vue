@@ -2,11 +2,16 @@
   <div class="v-bg">
     <a-modal title="登录" v-model="centerDialogVisible" width="400px" style="width:300px!important" :maskClosable="false" center :show-close="false" :modal="false" :closable="false" class="login-modal">
       <a-form :autoFormCreate="(form)=>{this.form = form}">
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="formItemLayout.wrapperCol" label='邮箱' fieldDecoratorId="email" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入邮箱地址'}],initialValue:email}">
+        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="formItemLayout.wrapperCol" label='账号' fieldDecoratorId="username" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入邮箱地址'}],initialValue:username}">
           <a-input placeholder='请输入邮箱地址' />
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="formItemLayout.wrapperCol" label='密码' fieldDecoratorId="password" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入密码' }],initialValue:password}">
           <a-input placeholder='请输入密码' type="password" />
+        </a-form-item>
+        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="formItemLayout.wrapperCol" label='验证' fieldDecoratorId="captcha" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入右侧验证码' }],initialValue:captcha}">
+          <a-input placeholder="请输入右侧验证码" class="captch-img" autocomplete="off" :value="captcha">
+            <div slot="addonAfter"><img :src="captchPath" style="width:120px;cursor:pointer" @click="getCaptch"></div>
+          </a-input>
         </a-form-item>
         <a-form-item :labelCol="formTailLayout.labelCol" :wrapperCol="formTailLayout.wrapperCol" style="margin-bottom:0">
           <a-checkbox v-model="memory" @change="memory!=memory">
@@ -23,6 +28,7 @@
 </template>
 <script>
 import Cookies from 'js-cookie'
+import uuid from 'uuid'
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 }
@@ -39,8 +45,10 @@ export default {
       formTailLayout,
       centerDialogVisible: true,
       loading: false,
-      email: 'admin@admin.com',
-      password: 'admin'
+      username: 'artiely',
+      password: '123',
+      captcha: '',
+      captchPath: ''
     }
   },
   computed: {
@@ -53,13 +61,22 @@ export default {
       this.form.validateFields(async(err, vals) => {
         if (!err) {
           this.loading = true
-          let res = await this.$api.LOGIN(vals)
-          if (res.status !== 'error') {
-            Cookies.set('access_token', res.access_token)
+          console.log(vals)
+          let res = await this.$api.LOGIN({...vals, uuid: this.uuid})
+          if (res.code === 0) {
+            Cookies.set('token', res.token)
             this.$router.replace('/store_list')
             let userInfo = await this.$api.USER_INFO()
-            console.log('userinfo', userInfo)
-            this.$store.commit('USER_INFO', userInfo)
+            if (userInfo.code === 0) {
+              this.$store.commit('USER_INFO', userInfo.user)
+              this.$message.success(`欢迎回来，${userInfo.user.chineseName}`)
+              this.$api.MENU_NAV().then(res => {
+                console.log('menu-nav', res)
+              })
+            }
+          } else {
+            this.getCaptch()
+            this.$message.error(res.msg)
           }
           this.loading = false
         }
@@ -134,14 +151,24 @@ export default {
         },
         retina_detect: true
       })
+    },
+    getCaptch() {
+      this.uuid = uuid()
+      this.captchPath = this.$api.CAPTCHA() + this.uuid
     }
   },
   mounted() {
     this._animateBg()
+    this.getCaptch()
   }
 }
 </script>
 <style lang="less">
+.captch-img {
+  .ant-input-group-addon {
+    padding: 0;
+  }
+}
 .v-bg {
   height: 100%;
   min-height: 100vh;

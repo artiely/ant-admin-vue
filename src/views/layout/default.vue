@@ -22,6 +22,11 @@ export default {
     drawerSiderMenu,
     drawerSetting
   },
+  data() {
+    return {
+      timer: null
+    }
+  },
   computed: {
     documentClientHeight: {
       get() {
@@ -45,7 +50,9 @@ export default {
       window.onresize = () => {
         this.$store.commit(
           'UPDATE_CLICENT_HEIGHT',
-          document.documentElement['clientHeight'] - headerHeight - navTabsHeight
+          document.documentElement['clientHeight'] -
+            headerHeight -
+            navTabsHeight
         )
       }
     },
@@ -55,10 +62,13 @@ export default {
         document.body['clientHeight'] - headerHeight - navTabsHeight
       )
       window.onresize = () => {
-        this.$store.commit(
-          'UPDATE_BODY_CLICENT_HEIGHT',
-          document.body['clientHeight'] - headerHeight - navTabsHeight
-        )
+        clearInterval(this.timer)
+        this.timer = setTimeout(() => {
+          this.$store.commit(
+            'UPDATE_BODY_CLICENT_HEIGHT',
+            document.body['clientHeight'] - headerHeight - navTabsHeight
+          )
+        }, 50)
       }
     }
   },
